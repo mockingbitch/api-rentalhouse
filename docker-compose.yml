@@ -1,0 +1,67 @@
+version: "3.1"
+services:
+  worker:
+    build: .docker/worker
+    container_name: rental_house_worker
+    working_dir: /var/www/html
+    tty: true
+    volumes:
+      - ./app/:/var/www/html
+#      - ./.docker/worker/php-ini-overrides.ini:/etc/php/8.1/fpm/conf.d/99-overrides.ini
+    command: [ "php", "artisan", "octane:start", "--host=0.0.0.0", "--port=1215" ]
+    #    command: sh -c 'php artisan octane:start --host=0.0.0.0 --port=1215'
+    ports:
+      - "1215:1215"
+    networks:
+      - app-network
+  nginx:
+    build: .docker/server
+    container_name: rental_house_server
+    working_dir: /var/www/html
+    volumes:
+      - ./app:/var/www/html
+      - ./.docker/server/conf/nginx.conf:/etc/nginx/conf/nginx.conf:ro
+      - ./.docker/server/conf.d:/etc/nginx/conf.d:ro
+      - ./.docker/logs/nginx_log:/var/log/nginx
+    ports:
+      - "81:80"
+    depends_on:
+      - worker
+    links:
+      - worker
+    networks:
+      - app-network
+  database:
+    platform: linux/x86_64
+    build: .docker/database
+    container_name: rental_house_database
+    ports:
+      - "3308:3306"
+    volumes:
+      - ./.docker/data:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-rentalhouses}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-password}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-password}
+      MYSQL_USER: ${DB_USERNAME:-user}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    restart: unless-stopped
+    networks:
+      - app-network
+  checker:
+    container_name: rental_house_checker
+    build:
+      context: .docker/checker
+    restart: 'no'
+    tty: true
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - database
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
