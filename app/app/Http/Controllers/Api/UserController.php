@@ -44,40 +44,7 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Register api
-     *
-     * @return JsonResponse
-     */
-    public function register(Request $request)
-    {
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
-        $success['token'] = $user->createToken('MyApp')->accessToken;
-        $success['name'] = $user->name;
-        $host = request()->root();
-        $client = new ClientRepository();
-        $newClient = $client->create(
-            $user->id,
-            $user['name'],
-            $host,
-            'users',
-            false,
-            true
-        );
-        $result['credential']['client_name'] = $newClient['name'];
-        $result['credential']['client_id'] = $newClient['id'];
-        $result['credential']['client_secret_key'] = $newClient['secret'];
 
-        return response()->json(
-            [
-                'success' => $success,
-                'result' => $result
-            ],
-            $this->successStatus
-        );
-    }
 
     /**
      * details api

@@ -49,3 +49,7 @@ docker compose down
 docker compose up
 ```
 12. Mở Browser và chạy `localhost:81`
+13. 
+```php 
+php artisan migrate --path=app/Core/Logging/migrations
+```
