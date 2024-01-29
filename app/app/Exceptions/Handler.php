@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -48,15 +49,16 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $e): Response
     {
-        Log::error('Exception', $e);
-
+        if (env('APP_ENV') == 'local') {
+            Log::error('Exception', $e);
+        }
         // Method not allow exception
         if ($e instanceof MethodNotAllowedHttpException) {
             $headers = $e->getHeaders();
             $allow = $headers['Allow'];
             return $this->failureProxy(
                 ErrorCodes::METHOD_NOT_ALLOWED,
-                __('messages.method_not_allow', ['method' => $allow])
+                __('message.method_not_allow', ['method' => $allow])
             );
         }
         // Local env render
@@ -70,6 +72,13 @@ class Handler extends ExceptionHandler
                 $e->getErrorCode(),
                 $e->getMessage(),
                 appends: $e->getContext()
+            );
+        }
+
+        if ($e instanceof NotFoundHttpException) {
+            return $this->failureProxy(
+                ErrorCodes::NOT_FOUND,
+                __('message.error.not_found')
             );
         }
 

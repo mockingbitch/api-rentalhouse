@@ -4,7 +4,6 @@ namespace App\Traits;
 
 use App\Enum\ErrorCodes;
 use App\Core\Logger\Log;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
 
@@ -56,17 +55,11 @@ trait ApiResponse
         array $appends = []
     ): JsonResponse
     {
-//        $log = app(Log::class);
         try {
-            // For verify address
-            if(isset($error['Address is invalid'])){
-                $error = 'Address is invalid';
-            }
             $response = [
                 'name'      => $errorCode[0],
                 'message'   => $message,
                 'status'    => $errorCode[1],
-//                'log_id'    => (!empty($log)) ? (int)$log->row_id : 0
             ];
 
             if (isset($errorCode[2])) {
@@ -80,9 +73,8 @@ trait ApiResponse
             if (!empty($appends)) {
                 $response = $response + $appends;
             }
-//            \App\Core\Logging\Log::append('Response', $response);
-//            \App\Core\Logging\Log::setMode();
-//            \App\Core\Logging\Log::send();
+            Log::error('api_error', json_encode($response, true));
+
             return response()->json([
                 'error' => $response,
             ], $errorCode[1]);

@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'error' => [
+        'not_found'         => 'Not found',
+        'method_not_allow'  => 'Method not allow',
+    ],
     'common' => [
         'create' => [
             'success'   => 'Created successfully',
