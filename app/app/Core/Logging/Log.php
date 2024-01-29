@@ -52,12 +52,12 @@ class Log
 
             if ($throwable != null) {
                 $log->message_data[strtolower($key . '_' . 'exception' . '_' . time())] = [
-                    'Message' => $throwable->getMessage(),
-                    'Trace' => $throwable->getTraceAsString(),
-                    'Code' => $throwable->getCode(),
-                    'File' => $throwable->getFile(),
-                    'Line' => $throwable->getLine(),
-                    'Previous' => $throwable->getPrevious()
+                    'Message'   => $throwable->getMessage(),
+                    'Trace'     => $throwable->getTraceAsString(),
+                    'Code'      => $throwable->getCode(),
+                    'File'      => $throwable->getFile(),
+                    'Line'      => $throwable->getLine(),
+                    'Previous'  => $throwable->getPrevious()
                 ];
             }
             app()->singleton(Log::class, function () use ($log) {
@@ -85,7 +85,7 @@ class Log
      */
     public static function send(): void
     {
-        if (Helper::isLogEnabled()) {
+//        if (Helper::isLogEnabled()) {
             $log = app(self::class);
             $logStatus = Log::SUCCESS;
             if ($log->is_error) {
@@ -101,6 +101,6 @@ class Log
                 'message' => json_encode($log->message_data['exception'] ?? []),
                 'status' => $logStatus,
             ]);
-        }
+//        }
     }
 }

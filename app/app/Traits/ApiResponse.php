@@ -2,7 +2,10 @@
 
 namespace App\Traits;
 
-use App\Core\Logging\Log;
+use App\Enum\ErrorCodes;
+use App\Core\Logger\Log;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\JsonResponse;
 
 trait ApiResponse
@@ -13,9 +16,12 @@ trait ApiResponse
      * @param array $data
      * @param int $status
      * @return JsonResponse
+     * @throws Exception
      */
     protected function success(array $data = [], int $status = 200): JsonResponse
     {
+        Log::info('info', json_encode($data));
+
         return response()->json($data, $status);
     }
 
@@ -35,25 +41,32 @@ trait ApiResponse
     }
 
     /**
+     * Failure
      * @param $errorCode
      * @param string $message
      * @param array|null $error
+     * @param array $appends
      * @return JsonResponse
-     * @throws \Exception
+     * @throws Exception
      */
-    protected function failure($errorCode, string $message, array $error = null, array $appends = []): JsonResponse
+    protected function failure(
+        $errorCode,
+        string $message,
+        array $error = null,
+        array $appends = []
+    ): JsonResponse
     {
-        $log = app(Log::class);
+//        $log = app(Log::class);
         try {
             // For verify address
             if(isset($error['Address is invalid'])){
                 $error = 'Address is invalid';
             }
             $response = [
-                'name' => $errorCode[0],
-                'message' => $message,
-                'status' => $errorCode[1],
-                'log_id'=> (!empty($log)) ? (int)$log->row_id : 0
+                'name'      => $errorCode[0],
+                'message'   => $message,
+                'status'    => $errorCode[1],
+//                'log_id'    => (!empty($log)) ? (int)$log->row_id : 0
             ];
 
             if (isset($errorCode[2])) {
@@ -67,18 +80,19 @@ trait ApiResponse
             if (!empty($appends)) {
                 $response = $response + $appends;
             }
-            \App\Core\Logging\Log::append('Response', $response);
-            \App\Core\Logging\Log::setMode();
-            \App\Core\Logging\Log::send();
+//            \App\Core\Logging\Log::append('Response', $response);
+//            \App\Core\Logging\Log::setMode();
+//            \App\Core\Logging\Log::send();
             return response()->json([
                 'error' => $response,
             ], $errorCode[1]);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             throw $exception;
         }
     }
 
     /**
+     * Failure Proxy
      * @param $errorCode
      * @param string $message
      * @return JsonResponse
@@ -86,11 +100,41 @@ trait ApiResponse
     protected function failureProxy($errorCode, string $message): JsonResponse
     {
         $response = [
-            'name' => $errorCode[0],
-            'message' => $message,
-            "code"=> 0,
-            'status' => $errorCode[1],
+            'name'      => $errorCode[0],
+            'message'   => $message,
+            'code'      => 0,
+            'status'    => $errorCode[1],
         ];
+        return response()->json([
+            'error' => $response,
+        ], $errorCode[1]);
+    }
+
+    /**
+     * Fail Exception
+     * @param Exception $exception
+     * @param array $errorCode
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function exception(
+        Exception $exception,
+        array $errorCode = ErrorCodes::REQUEST_BAD_REQUEST
+    ): JsonResponse
+    {
+        $message = [
+            'information'   => $exception->getMessage(),
+            'file'          => $exception->getFile(),
+            'line'          => $exception->getLine(),
+        ];
+
+        $response = [
+            'name'      => $errorCode[0],
+            'message'   => env('APP_ENV') == 'local' ? $message : $errorCode[0],
+            'status'    => $errorCode[1],
+        ];
+        Log::error('error', json_encode($message, true));
+
         return response()->json([
             'error' => $response,
         ], $errorCode[1]);

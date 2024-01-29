@@ -18,6 +18,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
     /**
      * Constructor
+     * @throws BindingResolutionException
      */
     public function __construct()
     {
@@ -39,7 +40,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
      *
      * @return mixed
      */
-    abstract public function getModel();
+    abstract public function getModel(): mixed;
 
     /**
      * Set model
@@ -98,10 +99,10 @@ abstract class BaseRepository implements BaseRepositoryInterface
     /**
      * Create
      *
-     * @param $attributes
+     * @param array $attributes
      * @return mixed
      */
-    public function create($attributes = []): mixed
+    public function create(array $attributes = []): mixed
     {
         return $this->model->create($attributes);
     }
@@ -132,10 +133,10 @@ abstract class BaseRepository implements BaseRepositoryInterface
      * Update
      *
      * @param $id
-     * @param $attributes
+     * @param array $attributes
      * @return false|mixed
      */
-    public function update($id, $attributes = []): mixed
+    public function update($id, array $attributes = []): mixed
     {
         $result = $this->find($id);
         if ($result) {

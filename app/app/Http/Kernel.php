@@ -2,9 +2,9 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\CheckAdminClientCredentials;
+use App\Http\Middleware\CheckClientCredentials;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
-use Laravel\Passport\Http\Middleware\CheckClientCredentials;
+//use Laravel\Passport\Http\Middleware\CheckClientCredentials;
 
 class Kernel extends HttpKernel
 {

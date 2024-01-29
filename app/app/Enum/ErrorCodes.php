@@ -4,58 +4,16 @@ namespace App\Enum;
 
 enum ErrorCodes
 {
-    // Inspired by https://www.easypost.com/errors-guide
-
-    /*
-     * INTERNAL_SERVER_ERROR
-     * NOT_ACCEPTABLE
-     * NOT_FOUND
-     * FORBIDDEN
-     * PAYMENT_REQUIRED
-     * UNAUTHORIZED
-     * BAD_REQUEST
-     * PAYMENT_GATEWAY.ERROR
-     *
-     * MODE.UNAUTHORIZED
-     * DATE.PARSE.FAILURE
-     *
-     * BANK_ACCOUNT.CHARGE.FAILURE
-     * BANK_ACCOUNT.VERIFY.FAILURE
-     *
-     * USER.INVALID
-     * USER.PARENT.INVALID
-     * USER.CHARGE.NOT_ALLOWED
-     */
-
-    public const USER_NO_METER = ['USER:NO_METER', 400];
     public const USER_UNAUTHORIZED = ['USER:UNAUTHORIZED', 401];
     public const USER_FORBIDDEN = ['USER:FORBIDDEN', 403];
-
-    public const ITEM_WEIGHT_TOO_HEAVY = ['ITEM:WEIGHT:TOO_HEAVY', 400];
-    public const ITEM_TYPE_PROHIBITED = ['ITEM:TYPE:PROHIBITED', 400];
-
-    public const SHIPMENT_RATE_UNAVAILABLE = ['SHIPMENT:RATE_UNAVAILABLE', 400];
-    public const SHIPMENT_ADDRESS_VERIFICATION_FAIL = ['SHIPMENT:ADDRESS_VERIFICATION_FAIL', 400];
-
-    public const METER_INSUFFICIENT_BALANCE = ['METER:INSUFFICIENT_BALANCE', 400];
-
-    public const SYSTEM_NOT_SUPPORTED = ['SYSTEM:NOT_SUPPORTED', 400];
-
     public const REQUEST_BAD_REQUEST = ['REQUEST:BAD_REQUEST', 400];
-
     public const REQUEST_VALIDATION_ERROR = ['REQUEST:VALIDATION_ERROR', 422];
-
-    public const SYSTEM_SERVICE_PROVIDER_ERROR = ['SYSTEM:SERVICE_PROVIDER_ERROR', 500];
-
+    public const SYSTEM_SERVICE_PROVIDER_ERROR = ['SYSTEM:SERVICE_ERROR', 500];
     public const SYSTEM_ERROR = ['SYSTEM:ERROR', 500];
     public const SYSTEM_UNAVAILABLE = ['SYSTEM:UNAVAILABLE', 503];
-
-    public const USPS_UNAVAILABLE = ['USPS:UNAVAILABLE', 503];
-
-    public const PDX_ERROR = ['PDX:ERROR', 500];
-    public const METHOD_NOT_ALLOWED = ['Method Not Allowed', 405];
-    public const NOT_FOUND = ['Not Found', 404, 0, true];
-    public const BAD_REQUEST = ['Bad Request', 400, 0, true];
+    public const METHOD_NOT_ALLOWED = ['METHOD NOT ALLOWED', 405];
+    public const NOT_FOUND = ['NOT FOUND', 404, 0, true];
+    public const BAD_REQUEST = ['BAD REQUEST', 400, 0, true];
 
     /*
 

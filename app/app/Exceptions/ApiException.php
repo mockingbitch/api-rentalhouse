@@ -35,13 +35,18 @@ class ApiException extends Exception
      * @param array|string $error
      * @param array $context
      */
-    public function __construct(array $errorCode, string $message = 'Api error', $error = [], array $context = [])
+    public function __construct(
+        array $errorCode,
+        string $message = 'Api error',
+        $error = [],
+        array $context = []
+    )
     {
         parent::__construct($message, $errorCode[1]);
 
-        $this->errors = $error;
-        $this->context = $context;
-        $this->errorCode = $errorCode;
+        $this->errors       = $error;
+        $this->context      = $context;
+        $this->errorCode    = $errorCode;
     }
 
     /**

@@ -22,14 +22,14 @@ interface BaseRepositoryInterface
      * @param $id
      * @return mixed
      */
-    public function find($id);
+    public function find($id): mixed;
 
     /**
      * Create
      * @param array $attributes
      * @return mixed
      */
-    public function create($attributes = []);
+    public function create(array $attributes = []): mixed;
 
     /**
      * Update
@@ -37,7 +37,7 @@ interface BaseRepositoryInterface
      * @param array $attributes
      * @return mixed
      */
-    public function update($id, $attributes = []);
+    public function update($id, array $attributes = []): mixed;
 
     /**
      * Delete

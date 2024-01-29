@@ -1,68 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use Laravel\Passport\ClientRepository;
 
 class UserController extends Controller
 {
-    public $successStatus = 200;
-
-    /**
-     * login api
-     *
-     * @return JsonResponse
-     */
-    public function login()
-    {
-        if (Auth::attempt(
-            [
-                'email' => request('email'),
-                'password' => request('password')
-            ]
-        )) {
-            $user = Auth::user();
-            $success['token'] = $user->createToken('MyApp')->accessToken;
-
-            return response()->json(
-                [
-                    'success' => $success
-                ],
-                $this->successStatus
-            );
-        }
-        else {
-            return response()->json(
-                [
-                    'error' => 'Unauthorised'
-                ], 401);
-        }
-    }
-
-
-
-    /**
-     * details api
-     *
-     * @return JsonResponse
-     */
-    public function details()
-    {
-        $user = Auth::user();
-
-        return response()->json(
-            [
-                'success' => $user
-            ],
-            $this->successStatus
-        );
-    }
-
     /**
      * @param String $social_token
      * @return void
@@ -93,12 +38,5 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return $this->responseBadRequest(['message' => $e->getMessage()]);
         }
-    }
-
-    public function test()
-    {
-        $user = auth()->user();
-        dd($user);
-        $user->tokens()->delete();
     }
 }

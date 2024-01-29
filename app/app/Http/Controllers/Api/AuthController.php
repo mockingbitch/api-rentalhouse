@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Core\Logging\Log;
+use App\Enum\ErrorCodes;
+use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\LoginRequest;
@@ -27,8 +29,10 @@ class AuthController extends Controller
 
     /**
      * Login
+     *
      * @param LoginRequest $request
      * @return JsonResponse
+     * @throws ApiException
      */
     public function login(LoginRequest $request): JsonResponse
     {
@@ -47,7 +51,6 @@ class AuthController extends Controller
                 'response' => $response
             ], 200);
         }
-
         return response()->json([
             'error' => __('message.login.failed')
         ], 401);
@@ -96,21 +99,22 @@ class AuthController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Show user data
+     *
+     * @return JsonResponse
+     * @throws ApiException
      */
-    public function getUserDetail(): JsonResponse
+    public function show(): JsonResponse
     {
-        if(Auth::guard('api')->check()){
-            $user = Auth::guard('api')->user();
+        try {
+            $user = Auth::user();
 
             return response()->json([
                 'data' => $user
             ],200);
+        } catch (Exception $exception) {
+            throw new ApiException(ErrorCodes::NOT_FOUND, $exception);
         }
-
-        return response()->json([
-            'data' => __('message.login.failed')
-        ], 401);
     }
 
     /**
@@ -134,5 +138,16 @@ class AuthController extends Controller
         return response()->json([
             'data' => __('message.login.failed')
         ],401);
+    }
+
+    /**
+     * Require Login
+     * @return JsonResponse
+     */
+    public function requireLogin(): JsonResponse
+    {
+        return response()->json([
+            'message' => 'Unauthorized'
+        ], 200);
     }
 }

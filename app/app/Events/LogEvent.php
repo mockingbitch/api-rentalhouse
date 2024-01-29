@@ -15,10 +15,17 @@ class LogEvent extends Event
     public array $logData;
     public ?string $token = null;
 
+    /**
+     * Constructor
+     *
+     * @param string $endpoint
+     * @param array $logData
+     * @param string|null $token
+     */
     public function __construct(string $endpoint, array $logData, string $token = null)
     {
         $this->endpoint = $endpoint;
-        $this->logData = $logData;
-        $this->token = $token;
+        $this->logData  = $logData;
+        $this->token    = $token;
     }
 }
