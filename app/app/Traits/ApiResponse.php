@@ -13,13 +13,20 @@ trait ApiResponse
      * API response success
      *
      * @param array $data
+     * @param bool $logFlag
      * @param int $status
      * @return JsonResponse
      * @throws Exception
      */
-    protected function success(array $data = [], int $status = 200): JsonResponse
+    protected function success(
+        array $data = [],
+        bool $logFlag = true,
+        int $status = 200
+    ): JsonResponse
     {
-        Log::info('info', json_encode($data));
+        if ($logFlag) :
+            Log::info('info', json_encode($data));
+        endif;
 
         return response()->json($data, $status);
     }
@@ -62,17 +69,17 @@ trait ApiResponse
                 'status'    => $errorCode[1],
             ];
 
-            if (isset($errorCode[2])) {
+            if (isset($errorCode[2])) :
                 $response['code'] = $errorCode[2];
-            }
+            endif;
 
-            if (!empty($error)) {
+            if (!empty($error)) :
                 $response['fields'] = $error;
-            }
+            endif;
 
-            if (!empty($appends)) {
+            if (!empty($appends)) :
                 $response = $response + $appends;
-            }
+            endif;
             Log::error('api_error', json_encode($response, true));
 
             return response()->json([
@@ -97,6 +104,7 @@ trait ApiResponse
             'code'      => 0,
             'status'    => $errorCode[1],
         ];
+
         return response()->json([
             'error' => $response,
         ], $errorCode[1]);
@@ -105,12 +113,14 @@ trait ApiResponse
     /**
      * Fail Exception
      * @param Exception $exception
+     * @param bool $logFlag
      * @param array $errorCode
      * @return JsonResponse
      * @throws Exception
      */
     public function exception(
         Exception $exception,
+        bool $logFlag = false,
         array $errorCode = ErrorCodes::REQUEST_BAD_REQUEST
     ): JsonResponse
     {
@@ -119,13 +129,14 @@ trait ApiResponse
             'file'          => $exception->getFile(),
             'line'          => $exception->getLine(),
         ];
-
+        if ($logFlag) :
+            Log::error('error', json_encode($message, true));
+        endif;
         $response = [
             'name'      => $errorCode[0],
             'message'   => env('APP_ENV') == 'local' ? $message : $errorCode[0],
             'status'    => $errorCode[1],
         ];
-        Log::error('error', json_encode($message, true));
 
         return response()->json([
             'error' => $response,

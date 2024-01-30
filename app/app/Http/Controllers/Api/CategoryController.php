@@ -2,37 +2,41 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Core\Logger\Log;
 use App\Enum\ErrorCodes;
 use App\Exceptions\ApiException;
+use App\Services\CategoryService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
 use App\Http\Requests\CategoryRequest;
 use App\Contracts\Repositories\CategoryRepositoryInterface;
 use Exception;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
     /**
+     * Constructor
      * @param CategoryRepositoryInterface $categoryRepository
+     * @param CategoryService $categoryService
      */
     public function __construct(
         public CategoryRepositoryInterface $categoryRepository,
+        protected CategoryService $categoryService,
     ) {
     }
 
     /**
      * Display a listing of the resource.
+     * @param Request $request
      * @return JsonResponse
+     * @throws Exception
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $categories = $this->categoryRepository->getAll();
-
-        return response()->json([
-            'categories' => $categories,
-        ], 200);
+        return $this->success(
+            $this->categoryService->index((array) $request)
+        );
     }
 
     /**
@@ -43,14 +47,15 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request): JsonResponse
     {
-        $data = $request->all();
         try {
-            $response['data']       = new CategoryResource($this->categoryRepository->create($data));
-            $response['message']    = __('message.common.create.success');
+            $response['data']    = new CategoryResource(
+                $this->categoryService->store($request->all())
+            );
+            $response['message'] = __('message.common.create.success');
 
-            return $this->success($response);
+            return $this->success($response, true);
         } catch (Exception $exception) {
-            return $this->exception($exception);
+            return $this->exception($exception, true);
         }
     }
 
@@ -59,19 +64,15 @@ class CategoryController extends Controller
      * @param string $id
      * @return JsonResponse
      * @throws ApiException
+     * @throws Exception
      */
     public function show(string $id): JsonResponse
     {
-        try {
-            $response['data'] = new CategoryResource($this->categoryRepository->find($id));
+        $response['data'] = new CategoryResource(
+            $this->categoryService->show($id)
+        );
 
-            return $this->success($response);
-        } catch (Exception $exception) {
-            throw new ApiException(
-                ErrorCodes::NOT_FOUND,
-                __('message.error.not_found')
-            );
-        }
+        return $this->success($response);
     }
 
     /**
@@ -79,18 +80,19 @@ class CategoryController extends Controller
      * @param CategoryRequest $request
      * @param int|null $id
      * @return JsonResponse
-     * @throws ApiException
+     * @throws Exception
      */
     public function update(CategoryRequest $request, ?int $id): JsonResponse
     {
-        $data = $request->all();
         try {
-            $response['data']       = new CategoryResource($this->categoryRepository->update($id, $data));
-            $response['message']    = __('message.common.update.success');
+            $response['data']    = new CategoryResource(
+                $this->categoryService->update($id, $request->all())
+            );
+            $response['message'] = __('message.common.update.success');
 
-            return $this->success($response);
+            return $this->success($response, true);
         } catch (Exception $exception) {
-            throw new ApiException(ErrorCodes::REQUEST_BAD_REQUEST, $exception);
+            return $this->exception($exception, true);
         }
     }
 
@@ -98,17 +100,17 @@ class CategoryController extends Controller
      * Remove the specified resource from storage.
      * @param string $id
      * @return JsonResponse
-     * @throws ApiException
+     * @throws Exception
      */
     public function destroy(string $id): JsonResponse
     {
         try {
-            $response['success'] = $this->categoryRepository->delete($id);
+            $response['success'] = $this->categoryService->destroy($id);
             $response['message'] = __('message.common.delete.success');
 
-            return $this->success($response);
+            return $this->success($response, true);
         } catch (Exception $exception) {
-            throw new ApiException(ErrorCodes::REQUEST_BAD_REQUEST, $exception);
+            return $this->exception($exception, true);
         }
     }
 }

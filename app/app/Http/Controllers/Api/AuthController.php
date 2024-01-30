@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Core\Logging\Log;
+use App\Core\Logger\Log;
 use App\Enum\ErrorCodes;
 use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
@@ -33,6 +33,7 @@ class AuthController extends Controller
      * @param LoginRequest $request
      * @return JsonResponse
      * @throws ApiException
+     * @throws \Exception
      */
     public function login(LoginRequest $request): JsonResponse
     {
@@ -45,11 +46,8 @@ class AuthController extends Controller
             $response['message']    = __('message.login.success');
             $response['token']      = $user->createToken(env('APP_NAME'))
                 ->accessToken;
-            Log::append('login', $response);
 
-            return response()->json([
-                'response' => $response
-            ], 200);
+            return $this->success($response);
         }
         return response()->json([
             'error' => __('message.login.failed')
