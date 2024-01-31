@@ -1,0 +1,1490 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Rental House API version 1.0 Documentation",
+        "description": "Rental House API version 1.0 Documentation",
+        "contact": {
+            "email": "jarvis.phongtran@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:81/api",
+            "description": "Rental House API version 1.0"
+        }
+    ],
+    "paths": {
+        "/category": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "List Categories",
+                "description": "Get list of all categories",
+                "operationId": "List Categories",
+                "parameters": [
+                    {
+                        "name": "created_at_after",
+                        "in": "header",
+                        "description": "categories.created_at >= created_at_after",
+                        "required": false,
+                        "schema": {
+                            "type": "datetime"
+                        }
+                    },
+                    {
+                        "name": "created_at_before",
+                        "in": "header",
+                        "description": "categories.created_at <= created_at_before",
+                        "required": false,
+                        "schema": {
+                            "type": "datetime"
+                        }
+                    },
+                    {
+                        "name": "id_after",
+                        "in": "header",
+                        "description": "categories.id > id_after",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "in": "header",
+                        "description": "Total record per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "100"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "header",
+                        "description": "Current page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name_vi": {
+                                                        "type": "string",
+                                                        "example": "Nhà trọ"
+                                                    },
+                                                    "name_en": {
+                                                        "type": "string",
+                                                        "example": "Department"
+                                                    },
+                                                    "description_vi": {
+                                                        "type": "string",
+                                                        "example": "Nhà trọ cho thuê"
+                                                    },
+                                                    "description_en": {
+                                                        "type": "string",
+                                                        "example": "Department for rent"
+                                                    },
+                                                    "icon": {
+                                                        "type": "string",
+                                                        "example": "<svg>Icon svg <svg>"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "display"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2024-01-27 03:59:45"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2024-01-27 03:59:45"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "total_pages": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "page_size": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "filter": {
+                                            "properties": {
+                                                "created_at_after": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "created_at_before": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "id_after": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Create Category",
+                "description": "Create new category",
+                "operationId": "Create Category",
+                "requestBody": {
+                    "description": "Body data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name_vi": {
+                                        "type": "string",
+                                        "example": "Homestay"
+                                    },
+                                    "name_en": {
+                                        "type": "string",
+                                        "example": "Homestay"
+                                    },
+                                    "description_vi": {
+                                        "type": "string",
+                                        "example": "Homestay"
+                                    },
+                                    "description_en": {
+                                        "type": "string",
+                                        "example": "Homestay"
+                                    },
+                                    "icon": {
+                                        "type": "string",
+                                        "example": "<svg>Icon svg <svg>"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name_vi": {
+                                                        "type": "string",
+                                                        "example": "Nhà trọ"
+                                                    },
+                                                    "name_en": {
+                                                        "type": "string",
+                                                        "example": "Department"
+                                                    },
+                                                    "description_vi": {
+                                                        "type": "string",
+                                                        "example": "Nhà trọ cho thuê"
+                                                    },
+                                                    "description_en": {
+                                                        "type": "string",
+                                                        "example": "Department for rent"
+                                                    },
+                                                    "icon": {
+                                                        "type": "string",
+                                                        "example": "<svg>Icon svg <svg>"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2024-01-27 03:59:45"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2024-01-27 03:59:45"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Created successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "BAD REQUEST"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Bad request"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "400"
+                                                },
+                                                "code": {
+                                                    "type": "string",
+                                                    "example": "0"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "REQUEST:VALIDATION_ERROR"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Request validation failed"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "422"
+                                                },
+                                                "fields": {
+                                                    "properties": {
+                                                        "name_vi": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string",
+                                                                "example": "The name vi has already been taken."
+                                                            }
+                                                        },
+                                                        "name_en": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string",
+                                                                "example": "The name en has already been taken."
+                                                            }
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/category/{id}": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Category detail",
+                "description": "Get detail of the category by id",
+                "operationId": "Category detail",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "header",
+                        "description": "categories.id",
+                        "required": false,
+                        "schema": {
+                            "type": "datetime"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name_vi": {
+                                                        "type": "string",
+                                                        "example": "Nhà trọ"
+                                                    },
+                                                    "name_en": {
+                                                        "type": "string",
+                                                        "example": "Department"
+                                                    },
+                                                    "description_vi": {
+                                                        "type": "string",
+                                                        "example": "Nhà trọ cho thuê"
+                                                    },
+                                                    "description_en": {
+                                                        "type": "string",
+                                                        "example": "Department for rent"
+                                                    },
+                                                    "icon": {
+                                                        "type": "string",
+                                                        "example": "<svg>Icon svg <svg>"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "display"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2024-01-27 03:59:45"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2024-01-27 03:59:45"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "NOT FOUND"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Not found"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "404"
+                                                },
+                                                "code": {
+                                                    "type": "string",
+                                                    "example": "0"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Delete Category",
+                "description": "Delete category by id",
+                "operationId": "Delete Category",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "header",
+                        "description": "categories.id",
+                        "required": false,
+                        "schema": {
+                            "type": "datetime"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "NOT FOUND"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Not found"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "404"
+                                                },
+                                                "code": {
+                                                    "type": "string",
+                                                    "example": "0"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Update Category",
+                "description": "Update category",
+                "operationId": "Update Category",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "header",
+                        "description": "categories.id",
+                        "required": false,
+                        "schema": {
+                            "type": "datetime"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Body data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name_vi": {
+                                        "type": "string",
+                                        "example": "Homestay"
+                                    },
+                                    "name_en": {
+                                        "type": "string",
+                                        "example": "Homestay"
+                                    },
+                                    "description_vi": {
+                                        "type": "string",
+                                        "example": "Homestay"
+                                    },
+                                    "description_en": {
+                                        "type": "string",
+                                        "example": "Homestay"
+                                    },
+                                    "icon": {
+                                        "type": "string",
+                                        "example": "<svg>Icon svg <svg>"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name_vi": {
+                                                        "type": "string",
+                                                        "example": "Nhà trọ"
+                                                    },
+                                                    "name_en": {
+                                                        "type": "string",
+                                                        "example": "Department"
+                                                    },
+                                                    "description_vi": {
+                                                        "type": "string",
+                                                        "example": "Nhà trọ cho thuê"
+                                                    },
+                                                    "description_en": {
+                                                        "type": "string",
+                                                        "example": "Department for rent"
+                                                    },
+                                                    "icon": {
+                                                        "type": "string",
+                                                        "example": "<svg>Icon svg <svg>"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "display"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2024-01-27 03:59:45"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2024-01-27 03:59:45"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "NOT FOUND"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Not found"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "404"
+                                                },
+                                                "code": {
+                                                    "type": "string",
+                                                    "example": "0"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "REQUEST:VALIDATION_ERROR"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Request validation failed"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "422"
+                                                },
+                                                "fields": {
+                                                    "properties": {
+                                                        "name_vi": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string",
+                                                                "example": "The name vi has already been taken."
+                                                            }
+                                                        },
+                                                        "name_en": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string",
+                                                                "example": "The name en has already been taken."
+                                                            }
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/tag": {
+            "get": {
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "List Tags",
+                "description": "Get list of all tags",
+                "operationId": "List Tags",
+                "parameters": [
+                    {
+                        "name": "created_at_after",
+                        "in": "header",
+                        "description": "tags.created_at >= created_at_after",
+                        "required": false,
+                        "schema": {
+                            "type": "datetime"
+                        }
+                    },
+                    {
+                        "name": "created_at_before",
+                        "in": "header",
+                        "description": "tags.created_at <= created_at_before",
+                        "required": false,
+                        "schema": {
+                            "type": "datetime"
+                        }
+                    },
+                    {
+                        "name": "id_after",
+                        "in": "header",
+                        "description": "tags.id > id_after",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "in": "header",
+                        "description": "Total record per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "100"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "header",
+                        "description": "Current page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name_vi": {
+                                                        "type": "string",
+                                                        "example": "Giá rẻ"
+                                                    },
+                                                    "name_en": {
+                                                        "type": "string",
+                                                        "example": "Cheap price"
+                                                    },
+                                                    "description_vi": {
+                                                        "type": "string",
+                                                        "example": "Giá rẻ"
+                                                    },
+                                                    "description_en": {
+                                                        "type": "string",
+                                                        "example": "Cheap price"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "display"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2024-01-27 03:59:45"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2024-01-27 03:59:45"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "total_pages": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "page_size": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "filter": {
+                                            "properties": {
+                                                "created_at_after": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "created_at_before": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "id_after": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "Create Tag",
+                "description": "Create new tag",
+                "operationId": "Create Tag",
+                "requestBody": {
+                    "description": "Body data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name_vi": {
+                                        "type": "string",
+                                        "example": "Giá rẻ"
+                                    },
+                                    "name_en": {
+                                        "type": "string",
+                                        "example": "Cheap price"
+                                    },
+                                    "description_vi": {
+                                        "type": "string",
+                                        "example": "Giá rẻ"
+                                    },
+                                    "description_en": {
+                                        "type": "string",
+                                        "example": "Cheap price"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name_vi": {
+                                                        "type": "string",
+                                                        "example": "Giá rẻ"
+                                                    },
+                                                    "name_en": {
+                                                        "type": "string",
+                                                        "example": "Cheap price"
+                                                    },
+                                                    "description_vi": {
+                                                        "type": "string",
+                                                        "example": "Giá rẻ"
+                                                    },
+                                                    "description_en": {
+                                                        "type": "string",
+                                                        "example": "Cheap price"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2024-01-27 03:59:45"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2024-01-27 03:59:45"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Created successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "BAD REQUEST"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Bad request"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "400"
+                                                },
+                                                "code": {
+                                                    "type": "string",
+                                                    "example": "0"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "REQUEST:VALIDATION_ERROR"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Request validation failed"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "422"
+                                                },
+                                                "fields": {
+                                                    "properties": {
+                                                        "name_vi": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string",
+                                                                "example": "The name vi has already been taken."
+                                                            }
+                                                        },
+                                                        "name_en": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string",
+                                                                "example": "The name en has already been taken."
+                                                            }
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/tag/{id}": {
+            "get": {
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "Tag detail",
+                "description": "Get detail of the tag by id",
+                "operationId": "Tag detail",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "header",
+                        "description": "tags.id",
+                        "required": false,
+                        "schema": {
+                            "type": "datetime"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name_vi": {
+                                                        "type": "string",
+                                                        "example": "Giá rẻ"
+                                                    },
+                                                    "name_en": {
+                                                        "type": "string",
+                                                        "example": "Cheap price"
+                                                    },
+                                                    "description_vi": {
+                                                        "type": "string",
+                                                        "example": "Giá rẻ"
+                                                    },
+                                                    "description_en": {
+                                                        "type": "string",
+                                                        "example": "Cheap price"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "display"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2024-01-27 03:59:45"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2024-01-27 03:59:45"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "NOT FOUND"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Not found"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "404"
+                                                },
+                                                "code": {
+                                                    "type": "string",
+                                                    "example": "0"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "Delete Tag",
+                "description": "Delete tag by id",
+                "operationId": "Delete Tag",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "header",
+                        "description": "tags.id",
+                        "required": false,
+                        "schema": {
+                            "type": "datetime"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "NOT FOUND"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Not found"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "404"
+                                                },
+                                                "code": {
+                                                    "type": "string",
+                                                    "example": "0"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "Update Tag",
+                "description": "Update tag",
+                "operationId": "Update Tag",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "header",
+                        "description": "tags.id",
+                        "required": false,
+                        "schema": {
+                            "type": "datetime"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Body data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name_vi": {
+                                        "type": "string",
+                                        "example": "Giá rẻ"
+                                    },
+                                    "name_en": {
+                                        "type": "string",
+                                        "example": "Cheap price"
+                                    },
+                                    "description_vi": {
+                                        "type": "string",
+                                        "example": "Giá rẻ"
+                                    },
+                                    "description_en": {
+                                        "type": "string",
+                                        "example": "Cheap price"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name_vi": {
+                                                        "type": "string",
+                                                        "example": "Giá rẻ"
+                                                    },
+                                                    "name_en": {
+                                                        "type": "string",
+                                                        "example": "Cheap price"
+                                                    },
+                                                    "description_vi": {
+                                                        "type": "string",
+                                                        "example": "Giá rẻ"
+                                                    },
+                                                    "description_en": {
+                                                        "type": "string",
+                                                        "example": "Cheap price"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "display"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2024-01-27 03:59:45"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2024-01-27 03:59:45"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "NOT FOUND"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Not found"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "404"
+                                                },
+                                                "code": {
+                                                    "type": "string",
+                                                    "example": "0"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "REQUEST:VALIDATION_ERROR"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Request validation failed"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "422"
+                                                },
+                                                "fields": {
+                                                    "properties": {
+                                                        "name_vi": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string",
+                                                                "example": "The name vi has already been taken."
+                                                            }
+                                                        },
+                                                        "name_en": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string",
+                                                                "example": "The name en has already been taken."
+                                                            }
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "responses": {
+            "204": {
+                "description": ""
+            },
+            "400": {
+                "description": ""
+            },
+            "413": {
+                "description": ""
+            }
+        },
+        "parameters": {
+            "Id": {
+                "name": "Id",
+                "in": "path",
+                "description": "Base Api controller",
+                "required": true,
+                "schema": {
+                    "type": "integer"
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearer": {
+                "type": "http",
+                "name": "bearer",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    }
+}

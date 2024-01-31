@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
-            $table->string('name_vi');
-            $table->string('name_en');
-            $table->string('description_vi')->nullable();
-            $table->string('description_en')->nullable();
+            $table->string('name_vi', 100);
+            $table->string('name_en', 100);
             $table->integer('status')->default(1);
             $table->dateTime('created_at')->nullable();
             $table->dateTime('updated_at')->nullable();

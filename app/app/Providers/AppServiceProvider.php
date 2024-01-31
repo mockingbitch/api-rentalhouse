@@ -35,7 +35,8 @@ class AppServiceProvider extends ServiceProvider
                 "App\Repositories\\{$repoName}"
             );
         }
-//
+
+        $this->app->register(\L5Swagger\L5SwaggerServiceProvider::class);
 //        $this->app->singleton(SystemConfigure::class, function () {
 //            try {
 //                $configures = \App\Models\Configure::query()->select(['key', 'value'])->get()->pluck('value', 'key')->toArray();

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class CategoryRequest extends BaseRequest
+class TagRequest extends BaseRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,9 +14,8 @@ class CategoryRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'name_vi' => 'required|max:100|unique:categories',
-            'name_en' => 'required|max:100|unique:categories',
-            'icon'    => 'required',
+            'name_vi' => 'required|max:100|unique:tags',
+            'name_en' => 'required|max:100|unique:tags',
         ];
     }
 
@@ -28,9 +27,8 @@ class CategoryRequest extends BaseRequest
     public function attributes(): array
     {
         return [
-            'name_vi' => __('label.category.field.name_vi'),
-            'name_en' => __('label.category.field.name_en'),
-            'icon'    => __('label.category.field.icon')
+            'name_vi' => __('label.tag.field.name_vi'),
+            'name_en' => __('label.tag.field.name_en'),
         ];
     }
 }

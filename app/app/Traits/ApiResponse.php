@@ -142,4 +142,9 @@ trait ApiResponse
             'error' => $response,
         ], $errorCode[1]);
     }
+
+    public function error()
+    {
+
+    }
 }

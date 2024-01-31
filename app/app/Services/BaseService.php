@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Enum\General;
 use App\Helpers\Common;
+use PhpParser\Node\Expr\Array_;
 
 class BaseService
 {
@@ -28,5 +30,65 @@ class BaseService
                 'id_after'          => $request['id_after'] ?? null,
             ]
         ];
+    }
+
+    /**
+     * Build condition for get list api
+     * @param array $request
+     * @return array
+     */
+    public function buildCondition(array $request = []): array
+    {
+        /** @var Array_ $condition */
+        $condition = [];
+        if (isset($request['name_vi'])) :
+            $condition[] = [
+                'name_vi',
+                'like',
+                '%' . $request['name_vi'] . '%'
+            ];
+        endif;
+        if (isset($request['name_en'])) :
+            $condition[] = [
+                'name_vi',
+                'like',
+                '%' . $request['name_en'] . '%'
+            ];
+        endif;
+        if (isset($request['created_at_after'])) :
+            $condition[] = [
+                'created_at',
+                '>=',
+                Common::validDate($request['created_at_after'])
+            ];
+        endif;
+        if (isset($request['created_at_before'])) :
+            $condition[] = [
+                'created_at',
+                '<=',
+                Common::validDate($request['created_at_before'])
+            ];
+        endif;
+        if (isset($request['id_after'])) :
+            $condition[] = [
+                'id',
+                '>',
+                $request['id_after']
+            ];
+        endif;
+        if (
+            isset($request['status'])
+            && auth()->user()->role == General::ROLE_ADMIN
+        ) :
+            $condition = [
+                'status' => $request['status'],
+            ];
+        else :
+            $condition = [
+                'status' => 1,
+            ];
+        endif;
+
+        return $condition;
     }
 }

@@ -172,6 +172,7 @@ return [
         Laravel\Passport\PassportServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
         App\Core\Logger\LogServiceProvider::class,
+        L5Swagger\L5SwaggerServiceProvider::class,
     ])->toArray(),
 
     /*

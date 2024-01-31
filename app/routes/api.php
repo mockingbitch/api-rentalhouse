@@ -19,12 +19,15 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('login','login');
     Route::post('register', 'register');
 });
+Route::resource('tag', TagController::class)->only(['index', 'show']);
+Route::resource('category', CategoryController::class)->only(['index', 'show']);
+
 Route::group(['middleware' => 'auth:api'], function () {
     Route::controller(AuthController::class)->group(function () {
         Route::get('user','show');
         Route::get('logout','logout');
     });
-    Route::resource('category', CategoryController::class);
-    Route::resource('tag', TagController::class);
+    Route::resource('tag', TagController::class)->except(['index', 'show']);
+    Route::resource('category', CategoryController::class)->except(['index', 'show']);
 });
 

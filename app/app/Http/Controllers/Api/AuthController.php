@@ -67,12 +67,14 @@ class AuthController extends Controller
             $input['password'] = bcrypt($input['password']);
             $user = $this->userRepository->create($input);
             $result['token'] = $user->createToken(env('APP_NAME'))->accessToken;
-            $result['name'] = $user->name;
+            $result['first_name'] = $user->first_name;
+            $result['last_name'] = $user->last_name;
+            $name = $user->first_name . ' ' . $user->last_name;
             $host = request()->root();
             $client = new ClientRepository();
             $newClient = $client->create(
                 $user->id,
-                $user['name'],
+                $name,
                 $host,
                 'users',
                 false,

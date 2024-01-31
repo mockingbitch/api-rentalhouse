@@ -2,24 +2,28 @@
 
 namespace App\Services;
 
-use App\Contracts\Repositories\CategoryRepositoryInterface;
 use App\Core\Logger\Log;
-use App\Enum\ErrorCodes;
 use App\Enum\General;
+use App\Enum\ErrorCodes;
 use App\Exceptions\ApiException;
+use App\Contracts\Repositories\TagRepositoryInterface;
 use App\Helpers\Common;
 use Exception;
 
-class CategoryService extends BaseService
+class TagService extends BaseService
 {
+    /**
+     * Constructor
+     * @param TagRepositoryInterface $tagRepository
+     */
     public function __construct(
-        protected CategoryRepositoryInterface $categoryRepository
+        protected TagRepositoryInterface $tagRepository
     )
     {
     }
 
     /**
-     * List Category
+     * List Tag
      * @param array $request
      * @return array
      * @throws Exception
@@ -29,12 +33,12 @@ class CategoryService extends BaseService
         $page     = Common::getPageSize($request)['current_page'];
         $pageSize = Common::getPageSize($request)['page_size'];
         try {
-            $categories = $this->categoryRepository->query()
+            $tag = $this->tagRepository->query()
                 ->where($this->buildCondition($request))
                 ->orderBy('id', General::SORT_DESC)
                 ->paginate($pageSize, ['*'], 'page', $page);
 
-            return $this->getList($categories, $request);
+            return $this->getList($tag, $request);
         } catch (Exception $exception) {
             Log::error('error', $exception->getMessage());
 
@@ -43,7 +47,7 @@ class CategoryService extends BaseService
     }
 
     /**
-     * Create new category
+     * Create new tag
      * @param array $request
      * @return mixed
      * @throws ApiException
@@ -51,8 +55,8 @@ class CategoryService extends BaseService
      */
     public function store(array $request = []): mixed
     {
-        if ($category = $this->categoryRepository->create($request)) :
-            return $category;
+        if ($tag = $this->tagRepository->create($request)) :
+            return $tag;
         endif;
         Log::error('error', __('message.common.error.bad_request'));
 
@@ -60,27 +64,27 @@ class CategoryService extends BaseService
     }
 
     /**
-     * Show category detail
+     * Show tag detail
      * @param int $id
      * @return mixed
      * @throws ApiException
      */
     public function show(int $id): mixed
     {
-        $category = $this->categoryRepository->find($id);
+        $tag = $this->tagRepository->find($id);
 
-        if (!$category) :
+        if (!$tag) :
             throw new ApiException(
                 ErrorCodes::NOT_FOUND,
                 __('message.error.not_found')
             );
         endif;
 
-        return $category;
+        return $tag;
     }
 
     /**
-     * Update category
+     * Update tag
      * @param int $id
      * @param array $request
      * @return false|mixed
@@ -88,22 +92,22 @@ class CategoryService extends BaseService
      */
     public function update(int $id, array $request = []): mixed
     {
-        if ($category = $this->categoryRepository->update($id, $request)) :
-            return $category;
+        if ($tag = $this->tagRepository->update($id, $request)) :
+            return $tag;
         endif;
 
         throw new ApiException(ErrorCodes::NOT_FOUND);
     }
 
     /**
-     * Delete category
+     * Delete tag
      * @param int $id
      * @return bool
      * @throws ApiException
      */
     public function destroy(int $id): bool
     {
-        if ($this->categoryRepository->delete($id)) :
+        if ($this->tagRepository->delete($id)) :
             return true;
         endif;
 
