@@ -103,7 +103,7 @@ class CategoryController extends Controller
     public function index(Request $request): JsonResponse
     {
         return $this->success(
-            $this->categoryService->index($request->all())
+            $this->categoryService->list($request->all())
         );
     }
 

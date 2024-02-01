@@ -5,41 +5,21 @@ namespace App\Services;
 use App\Contracts\Repositories\CategoryRepositoryInterface;
 use App\Core\Logger\Log;
 use App\Enum\ErrorCodes;
-use App\Enum\General;
 use App\Exceptions\ApiException;
-use App\Helpers\Common;
 use Exception;
 
 class CategoryService extends BaseService
 {
+    /**
+     * Constructor
+     *
+     * @param CategoryRepositoryInterface $categoryRepository
+     */
     public function __construct(
         protected CategoryRepositoryInterface $categoryRepository
     )
     {
-    }
-
-    /**
-     * List Category
-     * @param array $request
-     * @return array
-     * @throws Exception
-     */
-    public function index(array $request = []): array
-    {
-        $page     = Common::getPageSize($request)['current_page'];
-        $pageSize = Common::getPageSize($request)['page_size'];
-        try {
-            $categories = $this->categoryRepository->query()
-                ->where($this->buildCondition($request))
-                ->orderBy('id', General::SORT_DESC)
-                ->paginate($pageSize, ['*'], 'page', $page);
-
-            return $this->getList($categories, $request);
-        } catch (Exception $exception) {
-            Log::error('error', $exception->getMessage());
-
-            return $this->getList([], $request);
-        }
+        $this->repository = $this->categoryRepository;
     }
 
     /**

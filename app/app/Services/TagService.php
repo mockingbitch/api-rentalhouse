@@ -9,41 +9,20 @@ use App\Exceptions\ApiException;
 use App\Contracts\Repositories\TagRepositoryInterface;
 use App\Helpers\Common;
 use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
 
 class TagService extends BaseService
 {
     /**
      * Constructor
+     *
      * @param TagRepositoryInterface $tagRepository
      */
     public function __construct(
         protected TagRepositoryInterface $tagRepository
     )
     {
-    }
-
-    /**
-     * List Tag
-     * @param array $request
-     * @return array
-     * @throws Exception
-     */
-    public function index(array $request = []): array
-    {
-        $page     = Common::getPageSize($request)['current_page'];
-        $pageSize = Common::getPageSize($request)['page_size'];
-        try {
-            $tag = $this->tagRepository->query()
-                ->where($this->buildCondition($request))
-                ->orderBy('id', General::SORT_DESC)
-                ->paginate($pageSize, ['*'], 'page', $page);
-
-            return $this->getList($tag, $request);
-        } catch (Exception $exception) {
-            Log::error('error', $exception->getMessage());
-
-            return $this->getList([], $request);
-        }
+        $this->repository = $this->tagRepository;
     }
 
     /**
