@@ -36,6 +36,20 @@ class CategoryController extends Controller
      *     summary="List Categories",
      *     description="Get list of all categories",
      *     @OA\Parameter(
+     *          name="name_vi",
+     *          in="header",
+     *          required=false,
+     *          @OA\Schema(type="string"),
+     *          description="categories.name_vi like %.name_vi.%"
+     *      ),
+     *     @OA\Parameter(
+     *           name="name_en",
+     *           in="header",
+     *           required=false,
+     *           @OA\Schema(type="string"),
+     *           description="categories.name_en like %.name_en.%"
+     *       ),
+     *     @OA\Parameter(
      *         name="created_at_after",
      *         in="header",
      *         required=false,

@@ -34,6 +34,20 @@ class TagController extends Controller
      *     summary="List Tags",
      *     description="Get list of all tags",
      *     @OA\Parameter(
+     *           name="name_vi",
+     *           in="header",
+     *           required=false,
+     *           @OA\Schema(type="string"),
+     *           description="tags.name_vi like %.name_vi.%"
+     *       ),
+     *      @OA\Parameter(
+     *            name="name_en",
+     *            in="header",
+     *            required=false,
+     *            @OA\Schema(type="string"),
+     *            description="tags.name_en like %.name_en.%"
+     *        ),
+     *     @OA\Parameter(
      *         name="created_at_after",
      *         in="header",
      *         required=false,
@@ -100,7 +114,7 @@ class TagController extends Controller
     public function index(Request $request): JsonResponse
     {
         return $this->success(
-            $this->tagService->index($request->all())
+            $this->tagService->list($request->all())
         );
     }
 

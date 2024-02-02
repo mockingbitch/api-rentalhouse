@@ -4,13 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\House;
+use App\Services\HouseService;
 use Illuminate\Http\Request;
 
 class HouseController extends Controller
 {
-    public function __construct()
+    /**
+     * Constructor
+     *
+     * @param HouseService $houseService
+     */
+    public function __construct(
+        protected HouseService $houseService,
+    )
     {
-
     }
 
     /**
