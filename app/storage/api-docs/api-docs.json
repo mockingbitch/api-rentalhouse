@@ -10,7 +10,7 @@
     },
     "servers": [
         {
-            "url": "http://localhost:81/api",
+            "url": "http://my-default-host.com",
             "description": "Rental House API version 1.0"
         }
     ],
@@ -24,6 +24,24 @@
                 "description": "Get list of all categories",
                 "operationId": "List Categories",
                 "parameters": [
+                    {
+                        "name": "name_vi",
+                        "in": "header",
+                        "description": "categories.name_vi like %.name_vi.%",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name_en",
+                        "in": "header",
+                        "description": "categories.name_en like %.name_en.%",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "created_at_after",
                         "in": "header",
@@ -300,7 +318,7 @@
                         }
                     },
                     "422": {
-                        "description": "Bad request",
+                        "description": "Validation Error",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -691,7 +709,7 @@
                         }
                     },
                     "422": {
-                        "description": "Bad request",
+                        "description": "Validation Error",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -755,6 +773,24 @@
                 "description": "Get list of all tags",
                 "operationId": "List Tags",
                 "parameters": [
+                    {
+                        "name": "name_vi",
+                        "in": "header",
+                        "description": "tags.name_vi like %.name_vi.%",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name_en",
+                        "in": "header",
+                        "description": "tags.name_en like %.name_en.%",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "created_at_after",
                         "in": "header",
@@ -823,14 +859,6 @@
                                                         "example": "Giá rẻ"
                                                     },
                                                     "name_en": {
-                                                        "type": "string",
-                                                        "example": "Cheap price"
-                                                    },
-                                                    "description_vi": {
-                                                        "type": "string",
-                                                        "example": "Giá rẻ"
-                                                    },
-                                                    "description_en": {
                                                         "type": "string",
                                                         "example": "Cheap price"
                                                     },
@@ -917,14 +945,6 @@
                                     "name_en": {
                                         "type": "string",
                                         "example": "Cheap price"
-                                    },
-                                    "description_vi": {
-                                        "type": "string",
-                                        "example": "Giá rẻ"
-                                    },
-                                    "description_en": {
-                                        "type": "string",
-                                        "example": "Cheap price"
                                     }
                                 },
                                 "type": "object"
@@ -952,14 +972,6 @@
                                                         "example": "Giá rẻ"
                                                     },
                                                     "name_en": {
-                                                        "type": "string",
-                                                        "example": "Cheap price"
-                                                    },
-                                                    "description_vi": {
-                                                        "type": "string",
-                                                        "example": "Giá rẻ"
-                                                    },
-                                                    "description_en": {
                                                         "type": "string",
                                                         "example": "Cheap price"
                                                     },
@@ -1019,7 +1031,7 @@
                         }
                     },
                     "422": {
-                        "description": "Bad request",
+                        "description": "Validation Error",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1113,14 +1125,6 @@
                                                         "example": "Giá rẻ"
                                                     },
                                                     "name_en": {
-                                                        "type": "string",
-                                                        "example": "Cheap price"
-                                                    },
-                                                    "description_vi": {
-                                                        "type": "string",
-                                                        "example": "Giá rẻ"
-                                                    },
-                                                    "description_en": {
                                                         "type": "string",
                                                         "example": "Cheap price"
                                                     },
@@ -1292,14 +1296,6 @@
                                     "name_en": {
                                         "type": "string",
                                         "example": "Cheap price"
-                                    },
-                                    "description_vi": {
-                                        "type": "string",
-                                        "example": "Giá rẻ"
-                                    },
-                                    "description_en": {
-                                        "type": "string",
-                                        "example": "Cheap price"
                                     }
                                 },
                                 "type": "object"
@@ -1327,14 +1323,6 @@
                                                         "example": "Giá rẻ"
                                                     },
                                                     "name_en": {
-                                                        "type": "string",
-                                                        "example": "Cheap price"
-                                                    },
-                                                    "description_vi": {
-                                                        "type": "string",
-                                                        "example": "Giá rẻ"
-                                                    },
-                                                    "description_en": {
                                                         "type": "string",
                                                         "example": "Cheap price"
                                                     },
@@ -1398,7 +1386,7 @@
                         }
                     },
                     "422": {
-                        "description": "Bad request",
+                        "description": "Validation Error",
                         "content": {
                             "application/json": {
                                 "schema": {
