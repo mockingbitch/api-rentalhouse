@@ -180,7 +180,7 @@ class CategoryController extends Controller
      *     ),
      *     @OA\Response(
      *         response="422",
-     *         description="Bad request",
+     *         description="Validation Error",
      *         @OA\JsonContent(
      *             @OA\Property(property="error", type="object",
      *                  @OA\Property(property="name", type="string", example="REQUEST:VALIDATION_ERROR"),
@@ -336,7 +336,7 @@ class CategoryController extends Controller
      *     ),
      *     @OA\Response(
      *         response="422",
-     *         description="Bad request",
+     *         description="Validation Error",
      *         @OA\JsonContent(
      *             @OA\Property(property="error", type="object",
      *                  @OA\Property(property="name", type="string", example="REQUEST:VALIDATION_ERROR"),
