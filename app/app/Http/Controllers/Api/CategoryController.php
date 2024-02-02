@@ -15,6 +15,7 @@ class CategoryController extends Controller
 {
     /**
      * Constructor
+     *
      * @param CategoryService $categoryService
      */
     public function __construct(
@@ -24,6 +25,7 @@ class CategoryController extends Controller
 
     /**
      * Display a listing of the resource.
+     *
      * @param Request $request
      * @return JsonResponse
      * @throws Exception
@@ -103,12 +105,13 @@ class CategoryController extends Controller
     public function index(Request $request): JsonResponse
     {
         return $this->success(
-            $this->categoryService->index($request->all())
+            $this->categoryService->list($request->all())
         );
     }
 
     /**
      * Store a newly created resource in storage.
+     *
      * @param CategoryRequest $request
      * @return JsonResponse
      * @throws Exception
@@ -193,6 +196,7 @@ class CategoryController extends Controller
 
     /**
      * Display the specified resource.
+     *
      * @param string $id
      * @return JsonResponse
      * @throws ApiException
@@ -254,6 +258,7 @@ class CategoryController extends Controller
 
     /**
      * Update the specified resource in storage.
+     *
      * @param CategoryRequest $request
      * @param int|null $id
      * @return JsonResponse
@@ -347,6 +352,7 @@ class CategoryController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     *
      * @param string $id
      * @return JsonResponse
      * @throws Exception
