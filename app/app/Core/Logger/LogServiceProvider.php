@@ -24,7 +24,7 @@ class LogServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton('App\Helpers\LogToChannels', function () {
+        $this->app->singleton('App\Core\Logger\Log', function () {
             return new Log();
         });
     }

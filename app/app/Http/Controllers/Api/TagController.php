@@ -8,17 +8,17 @@ use App\Http\Requests\TagRequest;
 use App\Http\Resources\TagResource;
 use App\Http\Controllers\Controller;
 use App\Exceptions\ApiException;
-use App\Services\TagService1;
+use App\Services\TagService;
 use Exception;
 
 class TagController extends Controller
 {
     /**
      * Constructor
-     * @param TagService1 $tagService
+     * @param TagService $tagService
      */
     public function __construct(
-        protected TagService1 $tagService,
+        protected TagService $tagService,
     ) {
     }
 
