@@ -75,6 +75,7 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'client' => CheckClientCredentials::class,
+        'language' => \App\Http\Middleware\Localization::class,
 //        'admin-client' => CheckAdminClientCredentials::class
     ];
 }

@@ -14,20 +14,22 @@ use App\Http\Controllers\Api\TagController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::controller(AuthController::class)->group(function () {
-    Route::get('login', 'requireLogin')->name('login');
-    Route::post('login','login');
-    Route::post('register', 'register');
-});
-Route::resource('tag', TagController::class)->only(['index', 'show']);
-Route::resource('category', CategoryController::class)->only(['index', 'show']);
 
-Route::group(['middleware' => 'auth:api'], function () {
+Route::group(['middleware' => ['language']], function () {
     Route::controller(AuthController::class)->group(function () {
-        Route::get('user','show');
-        Route::get('logout','logout');
+        Route::get('login', 'requireLogin')->name('login');
+        Route::post('login','login');
+        Route::post('register', 'register');
     });
-    Route::resource('tag', TagController::class)->except(['index', 'show']);
-    Route::resource('category', CategoryController::class)->except(['index', 'show']);
-});
+    Route::resource('tag', TagController::class)->only(['index', 'show']);
+    Route::resource('category', CategoryController::class)->only(['index', 'show']);
 
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::controller(AuthController::class)->group(function () {
+            Route::get('user','show');
+            Route::get('logout','logout');
+        });
+        Route::resource('tag', TagController::class)->except(['index', 'show']);
+        Route::resource('category', CategoryController::class)->except(['index', 'show']);
+    });
+});
