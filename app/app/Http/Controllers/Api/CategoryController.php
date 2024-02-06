@@ -355,7 +355,7 @@ class CategoryController extends Controller
      *     ),
      * ),
      */
-    public function update(CategoryRequest $request, ?int $id): JsonResponse
+    public function update(CategoryRequest $request, ?string $id): JsonResponse
     {
         $category            = $this->categoryService->update($id, $request->all());
         $response['data']    = new CategoryResource($category);

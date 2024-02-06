@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('description_en')->nullable();
             $table->text('icon');
             $table->integer('status')->default(1);
+            $table->tinyInteger('created_by')->nullable();
+            $table->tinyInteger('updated_by')->nullable();
+            $table->tinyInteger('deleted_by')->nullable();
             $table->dateTime('created_at')->nullable();
             $table->dateTime('updated_at')->nullable();
             $table->softDeletes();

@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests;
 
-use App\Http\Requests\BaseRequest;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class LoginRequest extends BaseRequest
+class UpdateUserRequest extends BaseRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,8 +14,7 @@ class LoginRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'email'     => 'required|max:50',
-            'password'  => 'required|min:6|max:20',
+
         ];
     }
 }

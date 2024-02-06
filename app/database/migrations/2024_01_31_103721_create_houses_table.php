@@ -26,7 +26,11 @@ return new class extends Migration
             $table->integer('status')
                 ->default(0)
                 ->comment('0: Inactive; 1: Active');
-            $table->timestamps();
+            $table->tinyInteger('created_by')->nullable();
+            $table->tinyInteger('updated_by')->nullable();
+            $table->tinyInteger('deleted_by')->nullable();
+            $table->dateTime('created_at')->nullable();
+            $table->dateTime('updated_at')->nullable();
             $table->softDeletes();
         });
     }

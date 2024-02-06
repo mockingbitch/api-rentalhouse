@@ -40,6 +40,14 @@ interface BaseRepositoryInterface
     public function update($id, array $attributes = []): mixed;
 
     /**
+     * Soft Delete
+     *
+     * @param $id
+     * @return false|mixed
+     */
+    public function softDelete($id): mixed;
+
+    /**
      * Delete
      * @param $id
      * @return mixed

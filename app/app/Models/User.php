@@ -3,6 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enum\General;
+use App\Models\Address\District;
+use App\Models\Address\Province;
+use App\Models\Address\Ward;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -28,6 +34,9 @@ class User extends Authenticatable
         'last_name',
         'email',
         'password',
+        'created_by',
+        'updated_by',
+        'deleted_by',
     ];
 
     /**
@@ -49,4 +58,83 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * @var string[]
+     */
+    protected $appends = [
+        'ward',
+        'district',
+        'province',
+    ];
+
+    /**
+     * @return Attribute
+     */
+    public function ward(): Attribute
+    {
+        $ward = Ward::where('code', $this->ward_code)->first();
+
+        return Attribute::make(
+            get: fn() => $ward ? $ward->name : null
+        );
+    }
+
+    /**
+     * @return Attribute
+     */
+    public function district(): Attribute
+    {
+        $district = District::where('code', $this->district_code)->first();
+
+        return Attribute::make(
+            get: fn() => $district ? $district->name : null
+        );
+    }
+
+    /**
+     * @return Attribute
+     */
+    public function province(): Attribute
+    {
+        $province = Province::where('code', $this->province_code)->first();
+
+        return Attribute::make(
+            get: fn() => $province ? $province->name : null
+        );
+    }
+
+    /**
+     * Get Status Attribute
+     * @param $value
+     * @return string|null
+     */
+    public function getStatusAttribute($value): ?string
+    {
+        return match ($value) {
+            General::STATUS_INACTIVE  => __('label.common.status.inactive'),
+            General::STATUS_ACTIVE    => __('label.common.status.active'),
+            default => null,
+        };
+    }
+
+    /**
+     * Get Created At Attribute
+     * @param string $date
+     * @return string
+     */
+    public function getCreatedAtAttribute(string $date): string
+    {
+        return Carbon::parse($date)->format(General::DATE_TIME_FORMAT);
+    }
+
+    /**
+     * Get Updated At Attribute
+     * @param string $date
+     * @return string
+     */
+    public function getUpdatedAtAttribute(string $date): string
+    {
+        return Carbon::parse($date)->format(General::DATE_TIME_FORMAT);
+    }
 }

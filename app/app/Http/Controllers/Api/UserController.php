@@ -2,12 +2,27 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use App\Http\Requests\UpdateUserRequest;
+use App\Services\UserService;
+use Exception;
 
 class UserController extends Controller
 {
+    /**
+     * Constructor
+     *
+     * @param UserService $userService
+     */
+    public function __construct(
+        protected UserService $userService,
+    )
+    {
+
+    }
+
     /**
      * @param String $social_token
      * @return void
@@ -19,7 +34,7 @@ class UserController extends Controller
             $responseGoogle = json_decode($checkToken->getBody()->getContents(), true);
 
             return $this->checkUserByEmail($responseGoogle);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->responseBadRequest(['message' => $e->getMessage()]);
         }
     }
@@ -35,8 +50,38 @@ class UserController extends Controller
             $responseFacebook = json_decode($checkToken->getBody()->getContents(), true);
 
             return $this->checkUserByEmail($responseFacebook);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->responseBadRequest(['message' => $e->getMessage()]);
         }
+    }
+
+    /**
+     * Update user information
+     *
+     * @param UpdateUserRequest $request
+     * @param int|null $id
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function update(UpdateUserRequest $request, ?int $id): JsonResponse
+    {
+        $user                = $this->userService->update($id, $request->all());
+        $response['data']    = new UserResource($user);
+        $response['message'] = __('message.common.update.success');
+
+        return $this->success($response, true);
+    }
+
+    /**
+     * User Information
+     *
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function information(): JsonResponse
+    {
+        $response['data'] = new UserResource(auth()->user());
+
+        return $this->success($response);
     }
 }

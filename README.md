@@ -53,3 +53,5 @@ docker compose up
 ```php 
 php artisan migrate --path=app/Core/Logging/migrations
 ```
+14. Setup db: Character set: ```utf8mb4```
+15. Setup db: Collation: ```utf8mb4_general_ci```

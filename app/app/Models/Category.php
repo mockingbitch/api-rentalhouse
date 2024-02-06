@@ -14,5 +14,8 @@ class Category extends BaseModel
         'description_en',
         'icon',
         'status',
+        'created_by',
+        'updated_by',
+        'deleted_by',
     ];
 }

@@ -257,9 +257,9 @@ class TagController extends Controller
     /**
      * Update the specified resource in storage.
      * @param TagRequest $request
-     * @param int|null $id
+     * @param string|null $id
      * @return JsonResponse
-     * @throws Exception
+     * @throws ApiException
      * @OA\Patch(
      *     path="/tag/{id}",
      *     operationId="Update Tag",
@@ -332,7 +332,7 @@ class TagController extends Controller
      *     ),
      * ),
      */
-    public function update(TagRequest $request, ?int $id): JsonResponse
+    public function update(TagRequest $request, ?string $id): JsonResponse
     {
         $tag                 = $this->tagService->update($id, $request->all());
         $response['data']    = new TagResource($tag);
