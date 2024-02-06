@@ -1,19 +1,19 @@
 version: "3.1"
 services:
-#  worker:
-#    build: .docker/worker
-#    container_name: rental_house_worker
-#    working_dir: /var/www/html
-#    tty: true
-#    volumes:
-#      - ./app/:/var/www/html
-##      - ./.docker/worker/php-ini-overrides.ini:/etc/php/8.1/fpm/conf.d/99-overrides.ini
-#    command: [ "php", "artisan", "octane:start", "--host=0.0.0.0", "--port=1215", "--watch" ]
-#    #    command: sh -c 'php artisan octane:start --host=0.0.0.0 --port=1215'
-#    ports:
-#      - "1215:1215"
-#    networks:
-#      - app-network
+  worker:
+    build: .docker/worker
+    container_name: rental_house_worker
+    working_dir: /var/www/html
+    tty: true
+    volumes:
+      - ./app/:/var/www/html
+#      - ./.docker/worker/php-ini-overrides.ini:/etc/php/8.1/fpm/conf.d/99-overrides.ini
+    command: [ "php", "artisan", "octane:start", "--host=0.0.0.0", "--port=1215", "--watch" ]
+    #    command: sh -c 'php artisan octane:start --host=0.0.0.0 --port=1215'
+    ports:
+      - "1215:1215"
+    networks:
+      - app-network
   php:
     build: .docker/worker_no_octane
     container_name: rental_house_worker_no_octane
@@ -24,23 +24,23 @@ services:
       - ./.docker/logs/php_fpm_log:/var/log/php-fpm
     networks:
       - app-network
-#  nginx:
-#    build: .docker/server
-#    container_name: rental_house_server
-#    working_dir: /var/www/html
-#    volumes:
-#      - ./app:/var/www/html
-#      - ./.docker/server/conf/nginx.conf:/etc/nginx/conf/nginx.conf:ro
-#      - ./.docker/server/conf.d:/etc/nginx/conf.d:ro
-#      - ./.docker/logs/nginx_log:/var/log/nginx
-#    ports:
-#      - "81:80"
-#    depends_on:
-#      - worker
-#    links:
-#      - worker
-#    networks:
-#      - app-network
+  nginx:
+    build: .docker/server
+    container_name: rental_house_server
+    working_dir: /var/www/html
+    volumes:
+      - ./app:/var/www/html
+      - ./.docker/server/conf/nginx.conf:/etc/nginx/conf/nginx.conf:ro
+      - ./.docker/server/conf.d:/etc/nginx/conf.d:ro
+      - ./.docker/logs/nginx_log:/var/log/nginx
+    ports:
+      - "81:80"
+    depends_on:
+      - worker
+    links:
+      - worker
+    networks:
+      - app-network
   nginx_no_octane:
     build: .docker/server
     container_name: rental_house_server_no_octane
