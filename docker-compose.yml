@@ -14,6 +14,16 @@ services:
       - "1215:1215"
     networks:
       - app-network
+  php:
+    build: .docker/worker_no_octane
+    container_name: rental_house_worker_no_octane
+    working_dir: /var/www/html
+    tty: true
+    volumes:
+      - ./app/:/var/www/html
+      - ./.docker/logs/php_fpm_log:/var/log/php-fpm
+    networks:
+      - app-network
   nginx:
     build: .docker/server
     container_name: rental_house_server
@@ -29,6 +39,20 @@ services:
       - worker
     links:
       - worker
+    networks:
+      - app-network
+  nginx_no_octane:
+    build: .docker/server
+    container_name: rental_house_server_no_octane
+    working_dir: /var/www/html
+    volumes:
+      - ./app:/var/www/html
+      - ./.docker/server_no_octane/conf/app.conf:/etc/nginx/conf.d/nginx.conf
+      - ./.docker/logs/nginx_log:/var/log/nginx
+    ports:
+      - "82:80"
+    links:
+      - php
     networks:
       - app-network
   database:
