@@ -6,6 +6,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class CategoryResource extends JsonResource
 {
+    /**
+     * Response
+     *
+     * @param $request
+     * @return array
+     */
     public function toResponse($request): array
     {
         return [

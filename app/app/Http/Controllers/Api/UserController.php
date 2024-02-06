@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+
+    }
+
     /**
      * @param String $social_token
      * @return void
@@ -38,5 +43,10 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return $this->responseBadRequest(['message' => $e->getMessage()]);
         }
+    }
+
+    public function information()
+    {
+
     }
 }
