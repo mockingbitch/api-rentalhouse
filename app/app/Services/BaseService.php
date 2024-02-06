@@ -9,6 +9,7 @@ use App\Exceptions\ApiException;
 use App\Helpers\Common;
 use App\Helpers\ResponseHelper;
 use App\Repositories\BaseRepository;
+use Carbon\Carbon;
 use Exception;
 use PhpParser\Node\Expr\Array_;
 
@@ -45,8 +46,7 @@ abstract class BaseService
         $page     = Common::getPageSize($request)['current_page'];
         $pageSize = Common::getPageSize($request)['page_size'];
         try {
-            /** @var Array_ $condition */
-            $condition = [];
+            $condition = $this->buildCondition($request);
             if (isset($request['name_vi'])) :
                 $condition[] = [
                     'name_vi',
@@ -59,39 +59,6 @@ abstract class BaseService
                     'name_vi',
                     'like',
                     '%' . $request['name_en'] . '%'
-                ];
-            endif;
-            if (isset($request['created_at_after'])) :
-                $condition[] = [
-                    'created_at',
-                    '>=',
-                    Common::validDate($request['created_at_after'])
-                ];
-            endif;
-            if (isset($request['created_at_before'])) :
-                $condition[] = [
-                    'created_at',
-                    '<=',
-                    Common::validDate($request['created_at_before'])
-                ];
-            endif;
-            if (isset($request['id_after'])) :
-                $condition[] = [
-                    'id',
-                    '>',
-                    $request['id_after']
-                ];
-            endif;
-            if (
-                isset($request['status'])
-                && auth()->user()->role == General::ROLE_ADMIN
-            ) :
-                $condition = [
-                    'status' => $request['status'],
-                ];
-            else :
-                $condition = [
-                    'status' => 1,
                 ];
             endif;
             $data = $this->repository->query()
@@ -118,6 +85,7 @@ abstract class BaseService
      */
     public function store(array $request = []): mixed
     {
+        $request['created_by'] = auth()->user()->id ?? null;
         if ($result = $this->repository->create($request)) :
             return $result;
         endif;
@@ -129,14 +97,13 @@ abstract class BaseService
     /**
      * Show resource detail
      *
-     * @param int $id
+     * @param string $id
      * @return mixed
      * @throws ApiException
      */
-    public function show(int $id): mixed
+    public function show(string $id): mixed
     {
         $result = $this->repository->find($id);
-
         if (!$result) :
             throw new ApiException(
                 ErrorCodes::NOT_FOUND,
@@ -147,26 +114,28 @@ abstract class BaseService
         return $result;
     }
 
-
     /**
      * Update resource
      *
-     * @param int $id
+     * @param string $id
      * @param array $request
      * @return false|mixed
      * @throws ApiException
      */
-    public function update(int $id, array $request = []): mixed
+    public function update(string $id, array $request = []): mixed
     {
         if ($result = $this->repository->update($id, $request)) :
             return $result;
         endif;
 
-        throw new ApiException(ErrorCodes::NOT_FOUND);
+        throw new ApiException(
+            ErrorCodes::NOT_FOUND,
+            __('message.error.not_found')
+        );
     }
 
     /**
-     * Delete resource
+     * Soft delete resource
      *
      * @param int $id
      * @return bool
@@ -174,13 +143,60 @@ abstract class BaseService
      */
     public function destroy(int $id): bool
     {
-        if ($this->repository->delete($id)) :
-            return true;
+        if ($result = $this->repository->softDelete($id)) :
+            return $result;
         endif;
 
         throw new ApiException(
             ErrorCodes::NOT_FOUND,
             __('message.error.not_found')
         );
+    }
+
+    /**
+     * Build Condition
+     *
+     * @param array $request
+     * @return array|int[]
+     */
+    protected function buildCondition(array $request = []): array
+    {
+        /** @var Array_ $condition */
+        $condition = [];
+        if (isset($request['created_at_after'])) :
+            $condition[] = [
+                'created_at',
+                '>=',
+                Common::validDate($request['created_at_after'])
+            ];
+        endif;
+        if (isset($request['created_at_before'])) :
+            $condition[] = [
+                'created_at',
+                '<=',
+                Common::validDate($request['created_at_before'])
+            ];
+        endif;
+        if (isset($request['id_after'])) :
+            $condition[] = [
+                'id',
+                '>',
+                $request['id_after']
+            ];
+        endif;
+        if (
+            isset($request['status'])
+            && auth()->user()->role == General::ROLE_ADMIN
+        ) :
+            $condition = [
+                'status' => $request['status'],
+            ];
+        else :
+            $condition = [
+                'status' => 1,
+            ];
+        endif;
+
+        return $condition;
     }
 }

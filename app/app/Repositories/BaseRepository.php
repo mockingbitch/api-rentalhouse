@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Contracts\Repositories\BaseRepositoryInterface;
+use Carbon\Carbon;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -104,6 +105,8 @@ abstract class BaseRepository implements BaseRepositoryInterface
      */
     public function create(array $attributes = []): mixed
     {
+        $attributes['created_by'] = auth()->user()->id ?? null;
+
         return $this->model->create($attributes);
     }
 
@@ -138,6 +141,29 @@ abstract class BaseRepository implements BaseRepositoryInterface
      */
     public function update($id, array $attributes = []): mixed
     {
+        $attributes['updated_by'] = auth()->user()->id ?? null;
+        $result = $this->find($id);
+        if ($result) {
+            $result->update($attributes);
+            return $result;
+        }
+
+        return false;
+    }
+
+    /**
+     * Soft Delete
+     *
+     * @param $id
+     * @return false|mixed
+     */
+    public function softDelete($id): mixed
+    {
+        $attributes['deleted_by'] = auth()->user()->id ?? null;
+        $attributes = [
+            'deleted_by' => auth()->user()->id ?? null,
+            'deleted_at' => Carbon::now(),
+        ];
         $result = $this->find($id);
         if ($result) {
             $result->update($attributes);

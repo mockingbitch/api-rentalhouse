@@ -11,5 +11,8 @@ class Tag extends BaseModel
         'name_vi',
         'name_en',
         'status',
+        'created_by',
+        'updated_by',
+        'deleted_by',
     ];
 }

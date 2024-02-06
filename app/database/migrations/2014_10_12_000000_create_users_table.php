@@ -33,6 +33,9 @@ return new class extends Migration
                 ->comment('1: Email, 2: Google');
             $table->integer('status')->default(1);
             $table->rememberToken();
+            $table->tinyInteger('created_by')->nullable();
+            $table->tinyInteger('updated_by')->nullable();
+            $table->tinyInteger('deleted_by')->nullable();
             $table->dateTime('created_at')->nullable();
             $table->dateTime('updated_at')->nullable();
             $table->softDeletes();
