@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
+use App\Http\Entities\HouseEntity;
 use App\Http\Requests\HouseRequest;
 use App\Http\Requests\UpdateHouseRequest;
 use App\Http\Resources\HouseResource;
@@ -149,9 +150,15 @@ class HouseController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        return $this->success(
-            $this->houseService->listHouse($request->all())
-        );
+        $response = $this->houseService->listHouse($request->all());
+        $data = [];
+        foreach ($response['data'] as $item) {
+            $house = new HouseEntity($item->items());
+            $data[] = (new HouseResource($item))->toResponse($item);
+        }
+        $response['data'] = $data;
+
+        return $this->success($response);
     }
 
     /**

@@ -105,9 +105,9 @@ class House extends BaseModel
     public function address(): Attribute
     {
         $address = [
-            'province'  => $this->province() ?? null,
-            'district'  => $this->district() ?? null,
-            'ward'      => $this->ward() ?? null,
+            'province'  => Province::where('code', $this->province_code)->first() ?? null,
+            'district'  => District::where('code', $this->district_code)->first() ?? null,
+            'ward'      => Ward::where('code', $this->ward_code)->first() ?? null,
         ];
 
         return Attribute::make(
