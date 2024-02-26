@@ -16,10 +16,9 @@ return new class extends Migration
             $table->integer('house_id');
             $table->string('name', 100)->nullable();
             $table->text('description')->nullable();
-            $table->string('floor')->nullable();
-            $table->text('images')->nullable();
+            $table->json('detail')->nullable();
+            $table->json('images')->nullable();
             $table->double('price');
-            $table->integer('capacity');
             $table->integer('status')
                 ->default(0)
                 ->comment('0: Unavailable; 1: Available; 2: Rented');
@@ -30,6 +29,7 @@ return new class extends Migration
             $table->dateTime('created_at')->nullable();
             $table->dateTime('updated_at')->nullable();
             $table->softDeletes();
+            $table->text('reason_delete')->nullable();
         });
     }
 

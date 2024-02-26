@@ -163,9 +163,11 @@ class HouseController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     *
      * @param HouseRequest $request
      * @return JsonResponse
      * @throws ApiException
+     * @throws Exception
      * @OA\Post(
      *     path="/tag",
      *     operationId="Create Tag",
@@ -303,6 +305,7 @@ class HouseController extends Controller
 
     /**
      * Update the specified resource in storage.
+     *
      * @throws ApiException
      * @throws Exception
      */
@@ -317,6 +320,7 @@ class HouseController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     *
      * @throws ApiException
      * @throws Exception
      */
