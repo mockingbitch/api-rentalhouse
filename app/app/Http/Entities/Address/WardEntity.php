@@ -2,49 +2,51 @@
 
 namespace App\Http\Entities\Address;
 
+use App\Models\Address\Ward;
+
 class WardEntity
 {
     /**
      * @var string
      */
-    public string $code;
+    public ?string $code;
 
     /**
-     * @var string
+     * @var string|null $name
      */
-    public string $name;
+    public ?string $name;
 
     /**
-     * @var string
+     * @var string|null $name_en
      */
-    public string $name_en;
+    public ?string $name_en;
 
     /**
-     * @var string
+     * @var string|null $full_name
      */
-    public string $full_name;
+    public ?string $full_name;
 
     /**
-     * @var string
+     * @var string|null $full_name_en
      */
-    public string $full_name_en;
+    public ?string $full_name_en;
 
     /**
-     * @var string
+     * @var string|null $district_code
      */
-    public string $district_code;
+    public ?string $district_code;
 
     /**
      * Constructor
-     * @param array $params
+     * @param Ward $ward
      */
-    public function __construct(array $params = [])
+    public function __construct(Ward $ward)
     {
-        $this->code          = $params['code'];
-        $this->name          = $params['name'];
-        $this->name_en       = $params['name_en'];
-        $this->full_name     = $params['full_name'];
-        $this->full_name_en  = $params['full_name_en'];
-        $this->district_code = $params['district_code'];
+        $this->code          = $ward->code ?? null;
+        $this->name          = $ward->name ?? null;
+        $this->name_en       = $ward->name_en ?? null;
+        $this->full_name     = $ward->full_name ?? null;
+        $this->full_name_en  = $ward->full_name_en ?? null;
+        $this->district_code = $ward->district_code ?? null;
     }
 }

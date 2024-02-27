@@ -153,8 +153,8 @@ class HouseController extends Controller
         $response = $this->houseService->listHouse($request->all());
         $data = [];
         foreach ($response['data'] as $item) {
-            $house = new HouseEntity($item->items());
-            $data[] = (new HouseResource($item))->toResponse($item);
+            $house = new HouseEntity($item);
+            $data[] = (new HouseResource($house))->toResponse($item);
         }
         $response['data'] = $data;
 

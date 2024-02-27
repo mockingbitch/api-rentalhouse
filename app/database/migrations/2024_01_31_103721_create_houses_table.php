@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('full_address')->nullable();
             $table->string('thumbnail')->nullable();
             $table->integer('category_id');
-            $table->string('verified_at')->nullable();
+            $table->dateTime('verified_at')->nullable();
             $table->integer('status')
                 ->default(0)
                 ->comment('0: Inactive; 1: Active');

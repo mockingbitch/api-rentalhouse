@@ -2,49 +2,51 @@
 
 namespace App\Http\Entities\Address;
 
+use App\Models\Address\District;
+
 class DistrictEntity
 {
     /**
-     * @var string
+     * @var string|null $code
      */
-    public string $code;
+    public ?string $code;
 
     /**
-     * @var string
+     * @var string|null $name
      */
-    public string $name;
+    public ?string $name;
 
     /**
-     * @var string
+     * @var string|null $name_en
      */
-    public string $name_en;
+    public ?string $name_en;
 
     /**
-     * @var string
+     * @var string|null $full_name
      */
-    public string $full_name;
+    public ?string $full_name;
 
     /**
-     * @var string
+     * @var string|null $full_name_en
      */
-    public string $full_name_en;
+    public ?string $full_name_en;
 
     /**
-     * @var string
+     * @var string|null $province_code
      */
-    public string $province_code;
+    public ?string $province_code;
 
     /**
      * Constructor
-     * @param array $params
+     * @param District|null $district
      */
-    public function __construct(array $params = [])
+    public function __construct(?District $district)
     {
-        $this->code          = $params['code'];
-        $this->name          = $params['name'];
-        $this->name_en       = $params['name_en'];
-        $this->full_name     = $params['full_name'];
-        $this->full_name_en  = $params['full_name_en'];
-        $this->province_code = $params['province_code'];
+        $this->code          = $district->code ?? null;
+        $this->name          = $district->name ?? null;
+        $this->name_en       = $district->name_en ?? null;
+        $this->full_name     = $district->full_name ?? null;
+        $this->full_name_en  = $district->full_name_en ?? null;
+        $this->province_code = $district->province_cod ?? null;
     }
 }

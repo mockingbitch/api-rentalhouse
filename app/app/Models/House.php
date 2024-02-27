@@ -33,6 +33,16 @@ class House extends BaseModel
     ];
 
     /**
+     * @var string[]
+     */
+    protected $casts = [
+        'verified_at' => 'datetime:Y-m-d H:00',
+        'created_at'  => 'datetime:Y-m-d H:i:s',
+        'updated_at'  => 'datetime:Y-m-d H:i:s',
+        'deleted_at'  => 'datetime:Y-m-d H:i:s',
+    ];
+
+    /**
      * @return BelongsTo
      */
     public function lessor(): BelongsTo

@@ -16,18 +16,19 @@ class HouseResource extends JsonResource
     {
         return [
             'id'             => $this->id ?? null,
-            'lessor'         => $this->lessor ?? null,
             'name'           => $this->name ?? null,
+            'lessor'         => $this->lessor ?? null,
             'description'    => $this->description ?? null,
             'address'        => $this->address ?? null,
-            'full_address'   => $this->full_address ?? null,
             'thumbnail'      => $this->thumbnail ?? null,
-            'category_id'    => $this->category_id ?? null,
+            'category'       => $this->category ?? null,
             'verified_at'    => $this->verified_at ?? null,
             'status'         => $this->status ?? null,
             'created_by'     => $this->created_by ?? null,
             'updated_by'     => $this->updated_by ?? null,
             'deleted_by'     => $this->deleted_by ?? null,
+            'created_at'     => $this->created_at ?? null,
+            'updated_at'     => $this->updated_at ?? null,
         ];
     }
 }

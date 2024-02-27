@@ -2,48 +2,57 @@
 
 namespace App\Http\Entities;
 
+use App\Models\Category;
+
 class CategoryEntity
 {
     /**
-     * @var string
+     * @var string|null $id
      */
-    public string $name_vi;
+    public ?string $id;
 
     /**
-     * @var string
+     * @var string|null $name_vi
      */
-    public string $name_en;
+    public ?string $name_vi;
 
     /**
-     * @var string|null
+     * @var string|null $name_en
+     */
+    public ?string $name_en;
+
+    /**
+     * @var string|null $description_vi
      */
     public ?string $description_vi;
 
     /**
-     * @var string|null
+     * @var string|null $description_en
      */
     public ?string $description_en;
 
     /**
-     * @var string
+     * @var string|null $icon
      */
-    public string $icon;
+    public ?string $icon;
 
     /**
-     * @var string|null
+     * @var string|null $status
      */
     public ?string $status;
 
     /**
      * Constructor
-     * @param array $params
+     *
+     * @param Category|null $category
      */
-    public function __construct(array $params = [])
+    public function __construct(?Category $category)
     {
-        $this->name_vi          = $params['name_vi'];
-        $this->name_en          = $params['name_en'];
-        $this->description_vi   = $params['description_vi'];
-        $this->description_en   = $params['description_en'];
-        $this->icon             = $params['icon'];
+        $this->id               = $category->id ?? null;
+        $this->name_vi          = $category->name_vi ?? null;
+        $this->name_en          = $category->name_en ?? null;
+        $this->description_vi   = $category->description_vi ?? null;
+        $this->description_en   = $category->description_en ?? null;
+        $this->icon             = $category->icon ?? null;
     }
 }

@@ -3,14 +3,15 @@
 namespace App\Http\Entities;
 
 use App\Http\Entities\Address\AddressEntity;
+use App\Models\House;
 use DateTime;
 
 class HouseEntity
 {
     /**
-     * @var string
+     * @var string|null
      */
-    public string $id;
+    public ?string $id;
 
     /**
      * @var string|null
@@ -18,14 +19,14 @@ class HouseEntity
     public ?string $name;
 
     /**
-     * @var LessorEntity $lessor
+     * @var LessorEntity|null $lessor
      */
-    public LessorEntity $lessor;
+    public ?LessorEntity $lessor;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $full_name;
+    public ?string $full_name;
 
     /**
      * @var string|null $description
@@ -38,9 +39,9 @@ class HouseEntity
     public ?string $thumbnail;
 
     /**
-     * @var CategoryEntity
+     * @var CategoryEntity|null $category
      */
-    public CategoryEntity $category;
+    public ?CategoryEntity $category;
 
     /**
      * @var AddressEntity|null $address
@@ -48,9 +49,9 @@ class HouseEntity
     public ?AddressEntity $address;
 
     /**
-     * @var DateTime $verified_at
+     * @var DateTime|null $verified_at
      */
-    public DateTime $verified_at;
+    public ?DateTime $verified_at;
 
     /**
      * @var string|null $status
@@ -73,41 +74,42 @@ class HouseEntity
     public ?string $deleted_by;
 
     /**
-     * @var DateTime $created_at
+     * @var string|null $created_at
      */
-    public DateTime $created_at;
+    public ?string $created_at;
 
     /**
-     * @var DateTime|null $updated_at
+     * @var string|null $updated_at
      */
-    public ?DateTime $updated_at;
+    public ?string $updated_at;
 
     /**
-     * @var DateTime|null $deleted_at
+     * @var string|null $deleted_at
      */
-    public ?DateTime $deleted_at;
+    public ?string $deleted_at;
 
     /**
      * Constructor
-     * @param array $params
+     *
+     * @param House $house
      */
-    public function __construct(array $params = [])
+    public function __construct(House $house)
     {
-        $this->id           = $params['id'] ?? null;
-        $this->name         = $params['name'] ?? null;
-        $this->lessor       = $params['lessor'] ?? null;
-        $this->full_name    = $params['full_name'] ?? null;
-        $this->description  = $params['description'] ?? null;
-        $this->thumbnail    = $params['thumbnail'] ?? null;
-        $this->category     = $params['category'] ?? null;
-        $this->address      = $params['address'] ?? null;
-        $this->verified_at  = $params['verified_at'] ?? null;
-        $this->status       = $params['status'] ?? null;
-        $this->created_by   = $params['created_by'] ?? null;
-        $this->updated_by   = $params['updated_by'] ?? null;
-        $this->deleted_by   = $params['deleted_by'] ?? null;
-        $this->created_at   = $params['created_at'] ?? null;
-        $this->updated_at   = $params['updated_at'] ?? null;
-        $this->deleted_at   = $params['deleted_at'] ?? null;
+        $this->id           = $house->id ?? null;
+        $this->name         = $house->name ?? null;
+        $this->lessor       = new LessorEntity($house->lessor ?? null);
+        $this->full_name    = $house->full_name ?? null;
+        $this->description  = $house->description ?? null;
+        $this->thumbnail    = $house->thumbnail ?? null;
+        $this->category     = new CategoryEntity($house->category ?? null);
+        $this->address      = new AddressEntity($house->address ?? [], $house->full_address ?? null);
+        $this->verified_at  = $house->verified_at ?? null;
+        $this->status       = $house->status ?? null;
+        $this->created_by   = $house->created_by ?? null;
+        $this->updated_by   = $house->updated_by ?? null;
+        $this->deleted_by   = $house->deleted_by ?? null;
+        $this->created_at   = $house->created_at ?? null;
+        $this->updated_at   = $house->updated_at ?? null;
+        $this->deleted_at   = $house->deleted_at ?? null;
     }
 }

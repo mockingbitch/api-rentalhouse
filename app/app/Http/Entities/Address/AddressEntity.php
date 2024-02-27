@@ -27,12 +27,13 @@ class AddressEntity
     /**
      * Constructor
      * @param array $params
+     * @param string $full_address
      */
-    public function __construct(array $params = [])
+    public function __construct(array $params = [], string $full_address = '')
     {
-        $this->province     = $params['province'] ?? null;
-        $this->district     = $params['district'] ?? null;
-        $this->ward         = $params['ward'] ?? null;
-        $this->full_address = $params['full_address'] ?? null;
+        $this->province     = new ProvinceEntity($params['province'] ?? []);
+        $this->district     = new DistrictEntity($params['district'] ?? []);
+        $this->ward         = new WardEntity($params['ward'] ?? []);
+        $this->full_address = $full_address;
     }
 }
