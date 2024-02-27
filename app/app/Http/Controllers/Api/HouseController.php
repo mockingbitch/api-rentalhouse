@@ -296,9 +296,9 @@ class HouseController extends Controller
      */
     public function show(?string $id): JsonResponse
     {
-        $response['data'] = new HouseResource(
-            $this->houseService->show($id)
-        );
+        $house = new HouseEntity($this->houseService->show($id));
+        $response['data'] = (new HouseResource($house))
+            ->toResponse($this->houseService->show($id));
 
         return $this->success($response);
     }

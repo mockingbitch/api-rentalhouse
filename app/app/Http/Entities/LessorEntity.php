@@ -7,6 +7,11 @@ use App\Models\User;
 class LessorEntity
 {
     /**
+     * @var int|null $id
+     */
+    public ?int $id;
+
+    /**
      * @var string|null $first_name
      */
     public ?string $first_name;
@@ -38,6 +43,7 @@ class LessorEntity
      */
     public function __construct(?User $lessor)
     {
+        $this->id         = $lessor->id ?? null;
         $this->first_name = $lessor->first_name ?? null;
         $this->last_name  = $lessor->last_name ?? null;
         $this->email      = $lessor->email ?? null;
