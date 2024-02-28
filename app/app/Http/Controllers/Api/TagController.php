@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use App\Http\Requests\TagRequest;
-use App\Http\Resources\TagResource;
-use App\Http\Controllers\Controller;
 use App\Exceptions\ApiException;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Tag\TagRequest;
+use App\Http\Resources\TagResource;
 use App\Services\TagService;
 use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class TagController extends Controller
 {

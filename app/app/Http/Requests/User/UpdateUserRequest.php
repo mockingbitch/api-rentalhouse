@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
+use App\Http\Requests\BaseRequest;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class HouseRequest extends BaseRequest
+class UpdateUserRequest extends BaseRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +15,7 @@ class HouseRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            //
+
         ];
     }
 }

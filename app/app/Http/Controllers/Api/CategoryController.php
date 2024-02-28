@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoryRequest;
-use App\Http\Resources\CategoryResource;
 use App\Exceptions\ApiException;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Category\CategoryRequest;
+use App\Http\Resources\CategoryResource;
 use App\Services\CategoryService;
 use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {

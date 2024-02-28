@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Exceptions\ApiException;
-use App\Http\Controllers\Controller;
 use App\Http\Entities\HouseEntity;
-use App\Http\Requests\HouseRequest;
-use App\Http\Requests\UpdateHouseRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\House\HouseRequest;
+use App\Http\Requests\House\UpdateHouseRequest;
 use App\Http\Resources\HouseResource;
-use App\Models\House;
 use App\Services\HouseService;
 use Exception;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class HouseController extends Controller
 {
