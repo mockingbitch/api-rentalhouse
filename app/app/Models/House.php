@@ -30,6 +30,7 @@ class House extends BaseModel
         'created_by',
         'updated_by',
         'deleted_by',
+        'approve_by',
     ];
 
     /**

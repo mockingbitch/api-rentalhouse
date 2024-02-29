@@ -10,6 +10,10 @@ use App\Helpers\Common;
 use App\Helpers\ResponseHelper;
 use App\Repositories\BaseRepository;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Expr\Array_;
 
 abstract class BaseService
@@ -197,5 +201,21 @@ abstract class BaseService
         endif;
 
         return $condition;
+    }
+
+    /**
+     * Get Type master data
+     * @param int $key
+     * @param int|null $key_id
+     * @return Model|Builder|Collection
+     */
+    public function getType(int $key, ?int $key_id): Model|Builder|Collection
+    {
+        $query = DB::table('types_mst')->where('key', $key);
+        if ($key_id) :
+            return $query->where('key_id', $key_id)->first();
+        endif;
+
+        return $query->get();
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
-use App\Http\Entities\RoomEntity;
+use App\Http\Entities\Room\RoomEntity;
 use App\Http\Requests\Room\RoomRequest;
 use App\Http\Requests\Room\UpdateRoomRequest;
 use App\Http\Resources\RoomResource;
@@ -152,7 +152,7 @@ class RoomController extends Controller
         $response = $this->roomService->listRoom($request->all());
         $data = [];
         foreach ($response['data'] as $item) {
-            $room   = new RoomEntity($item);
+            $room   = new RoomEntity($item, true);
             $data[] = (new RoomResource($room))->toResponse($item);
         }
         $response['data'] = $data;

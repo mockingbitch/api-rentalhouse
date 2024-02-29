@@ -2,21 +2,37 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class CategorySeeder extends Seeder
+class DevDataSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run(): void
     {
         Schema::disableForeignKeyConstraints();
+        DB::table('types_mst')->truncate();
         DB::table('categories')->truncate();
+
+        $tags = [
+            [1, 'Giá rẻ', 'Cheap', 1],
+            [2, 'Mới', 'New', 1],
+            [3, 'Tầm trung', 'Middle', 1],
+            [4, 'Nội thành', 'Inside City', 1],
+        ];
+
+        foreach ($tags as $tag) {
+            DB::table('types_mst')->insert([
+                'id'         => $tag[0],
+                'name_vi'    => $tag[1],
+                'name_en'    => $tag[2],
+                'created_by' => $tag[3],
+            ]);
+        }
 
         $categories = [
             [

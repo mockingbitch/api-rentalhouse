@@ -19,6 +19,7 @@ return new class extends Migration
             $table->json('detail')->nullable();
             $table->json('images')->nullable();
             $table->double('price');
+            $table->integer('type');
             $table->integer('status')
                 ->default(0)
                 ->comment('0: Unavailable; 1: Available; 2: Rented');

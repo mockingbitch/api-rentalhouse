@@ -29,6 +29,7 @@ return new class extends Migration
             $table->tinyInteger('created_by')->nullable();
             $table->tinyInteger('updated_by')->nullable();
             $table->tinyInteger('deleted_by')->nullable();
+            $table->tinyInteger('approve_by')->nullable();
             $table->dateTime('created_at')->nullable();
             $table->dateTime('updated_at')->nullable();
             $table->softDeletes();
