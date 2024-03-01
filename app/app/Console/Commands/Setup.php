@@ -49,6 +49,9 @@ class Setup extends Command
         //Migrate database
         Artisan::call('migrate');
 
+        //Seeding data
+        Artisan::call('db:seed');
+
         //Migrate logs table
         if (!Schema::hasTable('logs')) :
             Artisan::call('migrate --path=app/Core/Logger/migrations');

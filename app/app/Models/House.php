@@ -30,6 +30,17 @@ class House extends BaseModel
         'created_by',
         'updated_by',
         'deleted_by',
+        'approve_by',
+    ];
+
+    /**
+     * @var string[]
+     */
+    protected $casts = [
+        'verified_at' => 'datetime:Y-m-d H:00',
+        'created_at'  => 'datetime:Y-m-d H:i:s',
+        'updated_at'  => 'datetime:Y-m-d H:i:s',
+        'deleted_at'  => 'datetime:Y-m-d H:i:s',
     ];
 
     /**
@@ -105,9 +116,9 @@ class House extends BaseModel
     public function address(): Attribute
     {
         $address = [
-            'province'  => $this->province() ?? null,
-            'district'  => $this->district() ?? null,
-            'ward'      => $this->ward() ?? null,
+            'province'  => Province::where('code', $this->province_code)->first() ?? null,
+            'district'  => District::where('code', $this->district_code)->first() ?? null,
+            'ward'      => Ward::where('code', $this->ward_code)->first() ?? null,
         ];
 
         return Attribute::make(

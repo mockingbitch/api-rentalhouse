@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Exceptions\ApiException;
+use App\Http\Entities\HouseEntity;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\HouseRequest;
-use App\Http\Requests\UpdateHouseRequest;
+use App\Http\Requests\House\HouseRequest;
+use App\Http\Requests\House\UpdateHouseRequest;
 use App\Http\Resources\HouseResource;
-use App\Models\House;
 use App\Services\HouseService;
 use Exception;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class HouseController extends Controller
 {
@@ -149,16 +149,24 @@ class HouseController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        return $this->success(
-            $this->houseService->listHouse($request->all())
-        );
+        $response = $this->houseService->listHouse($request->all());
+        $data = [];
+        foreach ($response['data'] as $item) {
+            $house = new HouseEntity($item);
+            $data[] = (new HouseResource($house))->toResponse($item);
+        }
+        $response['data'] = $data;
+
+        return $this->success($response);
     }
 
     /**
      * Store a newly created resource in storage.
+     *
      * @param HouseRequest $request
      * @return JsonResponse
      * @throws ApiException
+     * @throws Exception
      * @OA\Post(
      *     path="/tag",
      *     operationId="Create Tag",
@@ -287,15 +295,16 @@ class HouseController extends Controller
      */
     public function show(?string $id): JsonResponse
     {
-        $response['data'] = new HouseResource(
-            $this->houseService->show($id)
-        );
+        $house = new HouseEntity($this->houseService->show($id));
+        $response['data'] = (new HouseResource($house))
+            ->toResponse($this->houseService->show($id));
 
         return $this->success($response);
     }
 
     /**
      * Update the specified resource in storage.
+     *
      * @throws ApiException
      * @throws Exception
      */
@@ -310,6 +319,7 @@ class HouseController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     *
      * @throws ApiException
      * @throws Exception
      */

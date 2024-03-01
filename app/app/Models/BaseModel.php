@@ -18,11 +18,6 @@ class BaseModel extends Model
     protected $hidden = ['deleted_at'];
 
     /**
-     * @var array
-     */
-    protected $guarded = [];
-
-    /**
      * Get Status Attribute
      * @param $value
      * @return string|null
@@ -52,6 +47,16 @@ class BaseModel extends Model
      * @return string
      */
     public function getUpdatedAtAttribute(string $date): string
+    {
+        return Carbon::parse($date)->format(General::DATE_TIME_FORMAT);
+    }
+
+    /**
+     * Get Verified At Attribute
+     * @param string $date
+     * @return string
+     */
+    public function getVerifiedAtAttribute(string $date): string
     {
         return Carbon::parse($date)->format(General::DATE_TIME_FORMAT);
     }

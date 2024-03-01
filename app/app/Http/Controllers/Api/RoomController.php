@@ -4,23 +4,26 @@ namespace App\Http\Controllers\Api;
 
 use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Category\CategoryRequest;
-use App\Http\Resources\CategoryResource;
-use App\Services\CategoryService;
+use App\Http\Entities\Room\RoomEntity;
+use App\Http\Requests\Room\RoomRequest;
+use App\Http\Requests\Room\UpdateRoomRequest;
+use App\Http\Resources\RoomResource;
+use App\Services\RoomService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class RoomController extends Controller
 {
     /**
      * Constructor
      *
-     * @param CategoryService $categoryService
+     * @param RoomService $roomService
      */
     public function __construct(
-        protected CategoryService $categoryService,
-    ) {
+        protected RoomService $roomService,
+    )
+    {
     }
 
     /**
@@ -30,24 +33,52 @@ class CategoryController extends Controller
      * @return JsonResponse
      * @throws Exception
      * @OA\Get(
-     *     path="/category",
-     *     operationId="List Categories",
-     *     tags={"Categories"},
-     *     summary="List Categories",
-     *     description="Get list of all categories",
+     *     path="/room",
+     *     operationId="List Houses",
+     *     tags={"Houses"},
+     *     summary="List Houses",
+     *     description="Get list of all rooms",
      *     @OA\Parameter(
-     *          name="name_vi",
+     *          name="name",
      *          in="header",
      *          required=false,
      *          @OA\Schema(type="string"),
-     *          description="categories.name_vi like %.name_vi.%"
+     *          description="rooms.name like %.name.%"
      *      ),
      *     @OA\Parameter(
-     *           name="name_en",
+     *           name="province_code",
      *           in="header",
      *           required=false,
      *           @OA\Schema(type="string"),
-     *           description="categories.name_en like %.name_en.%"
+     *           description="rooms.province_code = province_code"
+     *       ),
+     *     @OA\Parameter(
+     *           name="district_code",
+     *           in="header",
+     *           required=false,
+     *           @OA\Schema(type="string"),
+     *           description="rooms.district_code = district_code"
+     *       ),
+     *     @OA\Parameter(
+     *           name="ward_code",
+     *           in="header",
+     *           required=false,
+     *           @OA\Schema(type="string"),
+     *           description="rooms.ward_code = ward_code"
+     *       ),
+     *     @OA\Parameter(
+     *           name="category_id",
+     *           in="header",
+     *           required=false,
+     *           @OA\Schema(type="string"),
+     *           description="rooms.category_id = category_id"
+     *       ),
+     *     @OA\Parameter(
+     *           name="status",
+     *           in="header",
+     *           required=false,
+     *           @OA\Schema(type="string"),
+     *           description="rooms.status = status"
      *       ),
      *     @OA\Parameter(
      *         name="created_at_after",
@@ -118,33 +149,37 @@ class CategoryController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        return $this->success(
-            $this->categoryService->list($request->all())
-        );
+        $response = $this->roomService->listRoom($request->all());
+        $data = [];
+        foreach ($response['data'] as $item) {
+            $room   = new RoomEntity($item, true);
+            $data[] = (new RoomResource($room))->toResponse($item);
+        }
+        $response['data'] = $data;
+
+        return $this->success($response);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param CategoryRequest $request
+     * @param RoomRequest $request
      * @return JsonResponse
+     * @throws ApiException
      * @throws Exception
      * @OA\Post(
-     *     path="/category",
-     *     operationId="Create Category",
-     *     tags={"Categories"},
-     *     summary="Create Category",
+     *     path="/tag",
+     *     operationId="Create Tag",
+     *     tags={"Tags"},
+     *     summary="Create Tag",
      *     security={{"bearer": {}}},
-     *     description="Create new category",
+     *     description="Create new tag",
      *     @OA\RequestBody(
      *         required=true,
      *         description="Body data",
      *        @OA\JsonContent(
-     *             @OA\Property(property="name_vi", type="string", example="Homestay"),
-     *             @OA\Property(property="name_en", type="string", example="Homestay"),
-     *             @OA\Property(property="description_vi", type="string", example="Homestay"),
-     *             @OA\Property(property="description_en", type="string", example="Homestay"),
-     *             @OA\Property(property="icon", type="string", example="<svg>Icon svg <svg>"),
+     *             @OA\Property(property="name_vi", type="string", example="Giá rẻ"),
+     *             @OA\Property(property="name_en", type="string", example="Cheap price"),
      *         )
      *     ),
      *     @OA\Response(
@@ -154,11 +189,8 @@ class CategoryController extends Controller
      *             @OA\Property(property="data", type="array",
      *                 @OA\Items(
      *                     @OA\Property(property="id", type="integer", example=1),
-     *                     @OA\Property(property="name_vi", type="string", example="Nhà trọ"),
-     *                     @OA\Property(property="name_en", type="string", example="Department"),
-     *                     @OA\Property(property="description_vi", type="string", example="Nhà trọ cho thuê"),
-     *                     @OA\Property(property="description_en", type="string", example="Department for rent"),
-     *                     @OA\Property(property="icon", type="string", example="<svg>Icon svg <svg>"),
+     *                     @OA\Property(property="name_vi", type="string", example="Giá rẻ"),
+     *                     @OA\Property(property="name_en", type="string", example="Cheap price"),
      *                     @OA\Property(property="created_at", type="string", example="2024-01-27 03:59:45"),
      *                     @OA\Property(property="updated_at", type="string", example="2024-01-27 03:59:45"),
      *                 ),
@@ -199,10 +231,10 @@ class CategoryController extends Controller
      *     ),
      * ),
      */
-    public function store(CategoryRequest $request): JsonResponse
+    public function store(RoomRequest $request): JsonResponse
     {
-        $category            = $this->categoryService->store($request->all());
-        $response['data']    = new CategoryResource($category);
+        $room                = $this->roomService->storeRoom($request->all());
+        $response['data']    = new RoomResource($room);
         $response['message'] = __('message.common.create.success');
 
         return $this->success($response, true);
@@ -211,7 +243,7 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param string $id
+     * @param string|null $id
      * @return JsonResponse
      * @throws ApiException
      * @throws Exception
@@ -261,11 +293,11 @@ class CategoryController extends Controller
      *     ),
      * ),
      */
-    public function show(string $id): JsonResponse
+    public function show(?string $id): JsonResponse
     {
-        $response['data'] = new CategoryResource(
-            $this->categoryService->show($id)
-        );
+        $room = new RoomEntity($this->roomService->show($id));
+        $response['data'] = (new RoomResource($room))
+            ->toResponse($this->roomService->show($id));
 
         return $this->success($response);
     }
@@ -273,93 +305,14 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param CategoryRequest $request
-     * @param int|null $id
-     * @return JsonResponse
+     * @throws ApiException
      * @throws Exception
-     * @OA\Patch(
-     *     path="/category/{id}",
-     *     operationId="Update Category",
-     *     tags={"Categories"},
-     *     summary="Update Category",
-     *     security={{"bearer": {}}},
-     *     description="Update category",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="header",
-     *         required=false,
-     *         @OA\Schema(type="datetime"),
-     *         description="categories.id"
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         description="Body data",
-     *        @OA\JsonContent(
-     *             @OA\Property(property="name_vi", type="string", example="Homestay"),
-     *             @OA\Property(property="name_en", type="string", example="Homestay"),
-     *             @OA\Property(property="description_vi", type="string", example="Homestay"),
-     *             @OA\Property(property="description_en", type="string", example="Homestay"),
-     *             @OA\Property(property="icon", type="string", example="<svg>Icon svg <svg>"),
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response="200",
-     *         description="Successful response",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="data", type="array",
-     *                 @OA\Items(
-     *                     @OA\Property(property="id", type="integer", example=1),
-     *                     @OA\Property(property="name_vi", type="string", example="Nhà trọ"),
-     *                     @OA\Property(property="name_en", type="string", example="Department"),
-     *                     @OA\Property(property="description_vi", type="string", example="Nhà trọ cho thuê"),
-     *                     @OA\Property(property="description_en", type="string", example="Department for rent"),
-     *                     @OA\Property(property="icon", type="string", example="<svg>Icon svg <svg>"),
-     *                     @OA\Property(property="status", type="string", example="display"),
-     *                     @OA\Property(property="created_at", type="string", example="2024-01-27 03:59:45"),
-     *                     @OA\Property(property="updated_at", type="string", example="2024-01-27 03:59:45"),
-     *                 ),
-     *             ),
-     *             @OA\Property(property="message", type="string", example="Updated successfully"),
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response="404",
-     *         description="Not found response",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="error", type="object",
-     *                  @OA\Property(property="name", type="string", example="NOT FOUND"),
-     *                  @OA\Property(property="message", type="string", example="Not found"),
-     *                  @OA\Property(property="status", type="string", example="404"),
-     *                  @OA\Property(property="code", type="string", example="0"),
-     *             ),
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response="422",
-     *         description="Validation Error",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="error", type="object",
-     *                  @OA\Property(property="name", type="string", example="REQUEST:VALIDATION_ERROR"),
-     *                  @OA\Property(property="message", type="string", example="Request validation failed"),
-     *                  @OA\Property(property="status", type="string", example="422"),
-     *                  @OA\Property(property="fields", type="object",
-     *                      @OA\Property(property="name_vi", type="array",
-     *                          @OA\Items(type="string", example="The name vi has already been taken."),
-     *                      ),
-     *                      @OA\Property(property="name_en", type="array",
-     *                          @OA\Items(type="string", example="The name en has already been taken."),
-     *                      ),
-     *                  ),
-     *             ),
-     *         )
-     *     ),
-     * ),
      */
-    public function update(CategoryRequest $request, ?string $id): JsonResponse
+    public function update(UpdateRoomRequest $request, ?int $id): JsonResponse
     {
-        $category            = $this->categoryService->update($id, $request->all());
-        $response['data']    = new CategoryResource($category);
-        $response['message'] = __('message.common.update.success');
+        $room                = $this->roomService->updateRoom($id, $request->all());
+        $response['data']    = new RoomResource($room);
+        $response['message'] = __('message.common.create.success');
 
         return $this->success($response, true);
     }
@@ -367,48 +320,12 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param string $id
-     * @return JsonResponse
+     * @throws ApiException
      * @throws Exception
-     * @OA\Delete(
-     *     path="/category/{id}",
-     *     operationId="Delete Category",
-     *     tags={"Categories"},
-     *     summary="Delete Category",
-     *     security={{"bearer": {}}},
-     *     description="Delete category by id",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="header",
-     *         required=false,
-     *         @OA\Schema(type="datetime"),
-     *         description="categories.id"
-     *     ),
-     *     @OA\Response(
-     *         response="200",
-     *         description="Successful response",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="message", type="string", example="Deleted successfully"),
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response="404",
-     *         description="Not found response",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="error", type="object",
-     *                  @OA\Property(property="name", type="string", example="NOT FOUND"),
-     *                  @OA\Property(property="message", type="string", example="Not found"),
-     *                  @OA\Property(property="status", type="string", example="404"),
-     *                  @OA\Property(property="code", type="string", example="0"),
-     *             ),
-     *         )
-     *     ),
-     * ),
      */
     public function destroy(string $id): JsonResponse
     {
-        $response['success'] = $this->categoryService->destroy($id);
+        $response['success'] = $this->roomService->destroy($id);
         $response['message'] = __('message.common.delete.success');
 
         return $this->success($response, true);

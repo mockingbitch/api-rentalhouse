@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class HouseResource extends JsonResource
+class RoomResource extends JsonResource
 {
     /**
      * Response
@@ -17,12 +17,12 @@ class HouseResource extends JsonResource
         return [
             'id'             => $this->id ?? null,
             'name'           => $this->name ?? null,
-            'lessor'         => $this->lessor ?? null,
+//            'lessor'         => $this->lessor ?? null,
+            'house'          => $this->house ?? null,
             'description'    => $this->description ?? null,
-            'address'        => $this->address ?? null,
-            'thumbnail'      => $this->thumbnail ?? null,
-            'category'       => $this->category ?? null,
-            'verified_at'    => $this->verified_at ?? null,
+            'images'         => $this->images ?? null,
+            'detail'         => $this->detail ?? null,
+            'tags'           => $this->tags ?? null,
             'status'         => $this->status ?? null,
             'created_by'     => $this->created_by ?? null,
             'updated_by'     => $this->updated_by ?? null,

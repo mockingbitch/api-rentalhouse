@@ -71,7 +71,7 @@ class HouseService extends BaseService
                 ->with(['lessor', 'rooms'])
                 ->orderBy('id', General::SORT_DESC)
                 ->paginate($pageSize, ['*'], 'page', $page);
-dd($data);
+
             return ResponseHelper::list($data, $request);
         } catch (Exception $exception) {
             return ResponseHelper::list([], $request);
