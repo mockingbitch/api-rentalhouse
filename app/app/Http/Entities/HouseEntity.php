@@ -93,7 +93,7 @@ class HouseEntity
      *
      * @param House $house
      */
-    public function __construct(House $house)
+    public function __construct(House $house, bool $hasPermission = false)
     {
         $this->id           = $house->id ?? null;
         $this->name         = $house->name ?? null;
@@ -105,11 +105,14 @@ class HouseEntity
         $this->address      = new AddressEntity($house->address ?? [], $house->full_address ?? null);
         $this->verified_at  = $house->verified_at ?? null;
         $this->status       = $house->status ?? null;
-        $this->created_by   = $house->created_by ?? null;
-        $this->updated_by   = $house->updated_by ?? null;
-        $this->deleted_by   = $house->deleted_by ?? null;
-        $this->created_at   = $house->created_at ?? null;
-        $this->updated_at   = $house->updated_at ?? null;
-        $this->deleted_at   = $house->deleted_at ?? null;
+        if ($hasPermission) :
+            $this->created_by   = $house->created_by ?? null;
+            $this->updated_by   = $house->updated_by ?? null;
+            $this->deleted_by   = $house->deleted_by ?? null;
+            $this->created_at   = $house->created_at ?? null;
+            $this->updated_at   = $house->updated_at ?? null;
+            $this->deleted_at   = $house->deleted_at ?? null;
+        endif;
+
     }
 }

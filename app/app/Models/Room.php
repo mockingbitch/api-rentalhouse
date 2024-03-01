@@ -43,9 +43,4 @@ class Room extends BaseModel
     {
         return $this->belongsTo(House::class, 'id');
     }
-
-    public function tagLabel()
-    {
-
-    }
 }
