@@ -20,7 +20,9 @@ return [
             'deleted_at' => 'Deleted at',
         ],
         'status' => [
-            'active'    => 'Display',
+            'active'    => 'Inactivate',
+            'draft'     => 'Draft',
+            'pending'   => 'Pending',
             'inactive'  => 'Hide',
         ],
     ],

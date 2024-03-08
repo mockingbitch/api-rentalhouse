@@ -7,9 +7,9 @@ use App\Models\Category;
 class CategoryEntity
 {
     /**
-     * @var string|null $id
+     * @var int|null $id
      */
-    public ?string $id;
+    public ?int $id;
 
     /**
      * @var string|null $name_vi
@@ -45,14 +45,17 @@ class CategoryEntity
      * Constructor
      *
      * @param Category|null $category
+     * @param bool $isFull
      */
-    public function __construct(?Category $category)
+    public function __construct(?Category $category, bool $isFull = false)
     {
         $this->id               = $category->id ?? null;
         $this->name_vi          = $category->name_vi ?? null;
         $this->name_en          = $category->name_en ?? null;
         $this->description_vi   = $category->description_vi ?? null;
         $this->description_en   = $category->description_en ?? null;
-        $this->icon             = $category->icon ?? null;
+        if ($isFull) :
+            $this->icon         = $category->icon ?? null;
+        endif;
     }
 }

@@ -18,20 +18,6 @@ class BaseModel extends Model
     protected $hidden = ['deleted_at'];
 
     /**
-     * Get Status Attribute
-     * @param $value
-     * @return string|null
-     */
-    public function getStatusAttribute($value): ?string
-    {
-        return match ($value) {
-            General::STATUS_INACTIVE  => __('label.common.status.inactive'),
-            General::STATUS_ACTIVE    => __('label.common.status.active'),
-            default => null,
-        };
-    }
-
-    /**
      * Get Created At Attribute
      * @param string $date
      * @return string

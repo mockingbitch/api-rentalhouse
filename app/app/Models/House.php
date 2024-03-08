@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\General;
 use App\Models\Address\District;
 use App\Models\Address\Province;
 use App\Models\Address\Ward;
@@ -108,6 +109,7 @@ class House extends BaseModel
      */
     protected $appends = [
         'address',
+        'status_label',
     ];
 
     /**
@@ -123,6 +125,21 @@ class House extends BaseModel
 
         return Attribute::make(
             get: fn() => $address ?? []
+        );
+    }
+
+    public function statusLabel(): Attribute
+    {
+        $label = match ($this->status) {
+            General::STATUS_INACTIVE  => __('label.common.status.inactive'),
+            General::STATUS_DRAFT     => __('label.common.status.draft'),
+            General::STATUS_PENDING   => __('label.common.status.pending'),
+            General::STATUS_ACTIVE    => __('label.common.status.active'),
+            default => null,
+        };
+
+        return Attribute::make(
+            get: fn() => $label
         );
     }
 }
