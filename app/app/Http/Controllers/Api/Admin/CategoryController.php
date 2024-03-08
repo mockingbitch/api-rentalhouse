@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Admin;
 
-use App\Exceptions\ApiException;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Category\CategoryRequest;
 use App\Http\Resources\CategoryResource;
+use App\Http\Requests\Category\CategoryRequest;
+use App\Exceptions\ApiException;
 use App\Services\CategoryService;
 use Exception;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {

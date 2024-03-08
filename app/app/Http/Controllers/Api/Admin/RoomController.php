@@ -1,72 +1,105 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Admin;
 
 use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Tag\TagRequest;
-use App\Http\Resources\TagResource;
-use App\Services\TagService;
+use App\Http\Entities\Room\RoomEntity;
+use App\Http\Requests\Room\RoomRequest;
+use App\Http\Requests\Room\UpdateRoomRequest;
+use App\Http\Resources\RoomResource;
+use App\Services\RoomService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class TagController extends Controller
+class RoomController extends Controller
 {
     /**
      * Constructor
-     * @param TagService $tagService
+     *
+     * @param RoomService $roomService
      */
     public function __construct(
-        protected TagService $tagService,
-    ) {
+        protected RoomService $roomService,
+    )
+    {
     }
 
     /**
      * Display a listing of the resource.
+     *
      * @param Request $request
      * @return JsonResponse
      * @throws Exception
      * @OA\Get(
-     *     path="/tag",
-     *     operationId="List Tags",
-     *     tags={"Tags"},
-     *     summary="List Tags",
-     *     description="Get list of all tags",
+     *     path="/room",
+     *     operationId="List Houses",
+     *     tags={"Houses"},
+     *     summary="List Houses",
+     *     description="Get list of all rooms",
      *     @OA\Parameter(
-     *           name="name_vi",
+     *          name="name",
+     *          in="header",
+     *          required=false,
+     *          @OA\Schema(type="string"),
+     *          description="rooms.name like %.name.%"
+     *      ),
+     *     @OA\Parameter(
+     *           name="province_code",
      *           in="header",
      *           required=false,
      *           @OA\Schema(type="string"),
-     *           description="tags.name_vi like %.name_vi.%"
+     *           description="rooms.province_code = province_code"
      *       ),
-     *      @OA\Parameter(
-     *            name="name_en",
-     *            in="header",
-     *            required=false,
-     *            @OA\Schema(type="string"),
-     *            description="tags.name_en like %.name_en.%"
-     *        ),
+     *     @OA\Parameter(
+     *           name="district_code",
+     *           in="header",
+     *           required=false,
+     *           @OA\Schema(type="string"),
+     *           description="rooms.district_code = district_code"
+     *       ),
+     *     @OA\Parameter(
+     *           name="ward_code",
+     *           in="header",
+     *           required=false,
+     *           @OA\Schema(type="string"),
+     *           description="rooms.ward_code = ward_code"
+     *       ),
+     *     @OA\Parameter(
+     *           name="category_id",
+     *           in="header",
+     *           required=false,
+     *           @OA\Schema(type="string"),
+     *           description="rooms.category_id = category_id"
+     *       ),
+     *     @OA\Parameter(
+     *           name="status",
+     *           in="header",
+     *           required=false,
+     *           @OA\Schema(type="string"),
+     *           description="rooms.status = status"
+     *       ),
      *     @OA\Parameter(
      *         name="created_at_after",
      *         in="header",
      *         required=false,
      *         @OA\Schema(type="datetime"),
-     *         description="tags.created_at >= created_at_after"
+     *         description="categories.created_at >= created_at_after"
      *     ),
      *     @OA\Parameter(
      *         name="created_at_before",
      *         in="header",
      *         required=false,
      *         @OA\Schema(type="datetime"),
-     *         description="tags.created_at <= created_at_before"
+     *         description="categories.created_at <= created_at_before"
      *     ),
      *     @OA\Parameter(
      *         name="id_after",
      *         in="header",
      *         required=false,
      *         @OA\Schema(type="integer"),
-     *         description="tags.id > id_after"
+     *         description="categories.id > id_after"
      *     ),
      *     @OA\Parameter(
      *         name="page_size",
@@ -89,8 +122,11 @@ class TagController extends Controller
      *             @OA\Property(property="data", type="array",
      *                 @OA\Items(
      *                     @OA\Property(property="id", type="integer", example=1),
-     *                     @OA\Property(property="name_vi", type="string", example="Giá rẻ"),
-     *                     @OA\Property(property="name_en", type="string", example="Cheap price"),
+     *                     @OA\Property(property="name_vi", type="string", example="Nhà trọ"),
+     *                     @OA\Property(property="name_en", type="string", example="Department"),
+     *                     @OA\Property(property="description_vi", type="string", example="Nhà trọ cho thuê"),
+     *                     @OA\Property(property="description_en", type="string", example="Department for rent"),
+     *                     @OA\Property(property="icon", type="string", example="<svg>Icon svg <svg>"),
      *                     @OA\Property(property="status", type="string", example="display"),
      *                     @OA\Property(property="created_at", type="string", example="2024-01-27 03:59:45"),
      *                     @OA\Property(property="updated_at", type="string", example="2024-01-27 03:59:45"),
@@ -113,15 +149,23 @@ class TagController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        return $this->success(
-            $this->tagService->list($request->all())
-        );
+        $response = $this->roomService->listRoom($request->all());
+        $data = [];
+        foreach ($response['data'] as $item) {
+            $room   = new RoomEntity($item, true);
+            $data[] = (new RoomResource($room))->toResponse($item);
+        }
+        $response['data'] = $data;
+
+        return $this->success($response);
     }
 
     /**
      * Store a newly created resource in storage.
-     * @param TagRequest $request
+     *
+     * @param RoomRequest $request
      * @return JsonResponse
+     * @throws ApiException
      * @throws Exception
      * @OA\Post(
      *     path="/tag",
@@ -187,10 +231,10 @@ class TagController extends Controller
      *     ),
      * ),
      */
-    public function store(TagRequest $request): JsonResponse
+    public function store(RoomRequest $request): JsonResponse
     {
-        $tag                 = $this->tagService->store($request->all());
-        $response['data']    = new TagResource($tag);
+        $room                = $this->roomService->storeRoom($request->all());
+        $response['data']    = new RoomResource($room);
         $response['message'] = __('message.common.create.success');
 
         return $this->success($response, true);
@@ -198,22 +242,23 @@ class TagController extends Controller
 
     /**
      * Display the specified resource.
-     * @param string $id
+     *
+     * @param string|null $id
      * @return JsonResponse
      * @throws ApiException
      * @throws Exception
      * @OA\Get(
-     *     path="/tag/{id}",
-     *     operationId="Tag detail",
-     *     tags={"Tags"},
-     *     summary="Tag detail",
-     *     description="Get detail of the tag by id",
+     *     path="/category/{id}",
+     *     operationId="Category detail",
+     *     tags={"Categories"},
+     *     summary="Category detail",
+     *     description="Get detail of the category by id",
      *     @OA\Parameter(
      *         name="id",
      *         in="header",
      *         required=false,
      *         @OA\Schema(type="datetime"),
-     *         description="tags.id"
+     *         description="categories.id"
      *     ),
      *     @OA\Response(
      *         response="200",
@@ -222,8 +267,11 @@ class TagController extends Controller
      *             @OA\Property(property="data", type="array",
      *                 @OA\Items(
      *                     @OA\Property(property="id", type="integer", example=1),
-     *                     @OA\Property(property="name_vi", type="string", example="Giá rẻ"),
-     *                     @OA\Property(property="name_en", type="string", example="Cheap price"),
+     *                     @OA\Property(property="name_vi", type="string", example="Nhà trọ"),
+     *                     @OA\Property(property="name_en", type="string", example="Department"),
+     *                     @OA\Property(property="description_vi", type="string", example="Nhà trọ cho thuê"),
+     *                     @OA\Property(property="description_en", type="string", example="Department for rent"),
+     *                     @OA\Property(property="icon", type="string", example="<svg>Icon svg <svg>"),
      *                     @OA\Property(property="status", type="string", example="display"),
      *                     @OA\Property(property="created_at", type="string", example="2024-01-27 03:59:45"),
      *                     @OA\Property(property="updated_at", type="string", example="2024-01-27 03:59:45"),
@@ -245,146 +293,39 @@ class TagController extends Controller
      *     ),
      * ),
      */
-    public function show(string $id): JsonResponse
+    public function show(?string $id): JsonResponse
     {
-        $response['data'] = new TagResource(
-            $this->tagService->show($id)
-        );
+        $room = new RoomEntity($this->roomService->show($id));
+        $response['data'] = (new RoomResource($room))
+            ->toResponse($this->roomService->show($id));
 
         return $this->success($response);
     }
 
     /**
      * Update the specified resource in storage.
-     * @param TagRequest $request
-     * @param string|null $id
-     * @return JsonResponse
+     *
      * @throws ApiException
-     * @OA\Patch(
-     *     path="/tag/{id}",
-     *     operationId="Update Tag",
-     *     tags={"Tags"},
-     *     summary="Update Tag",
-     *     security={{"bearer": {}}},
-     *     description="Update tag",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="header",
-     *         required=false,
-     *         @OA\Schema(type="datetime"),
-     *         description="tags.id"
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         description="Body data",
-     *        @OA\JsonContent(
-     *             @OA\Property(property="name_vi", type="string", example="Giá rẻ"),
-     *             @OA\Property(property="name_en", type="string", example="Cheap price"),
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response="200",
-     *         description="Successful response",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="data", type="array",
-     *                 @OA\Items(
-     *                     @OA\Property(property="id", type="integer", example=1),
-     *                     @OA\Property(property="name_vi", type="string", example="Giá rẻ"),
-     *                     @OA\Property(property="name_en", type="string", example="Cheap price"),
-     *                     @OA\Property(property="status", type="string", example="display"),
-     *                     @OA\Property(property="created_at", type="string", example="2024-01-27 03:59:45"),
-     *                     @OA\Property(property="updated_at", type="string", example="2024-01-27 03:59:45"),
-     *                 ),
-     *             ),
-     *             @OA\Property(property="message", type="string", example="Updated successfully"),
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response="404",
-     *         description="Not found response",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="error", type="object",
-     *                  @OA\Property(property="name", type="string", example="NOT FOUND"),
-     *                  @OA\Property(property="message", type="string", example="Not found"),
-     *                  @OA\Property(property="status", type="string", example="404"),
-     *                  @OA\Property(property="code", type="string", example="0"),
-     *             ),
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response="422",
-     *         description="Validation Error",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="error", type="object",
-     *                  @OA\Property(property="name", type="string", example="REQUEST:VALIDATION_ERROR"),
-     *                  @OA\Property(property="message", type="string", example="Request validation failed"),
-     *                  @OA\Property(property="status", type="string", example="422"),
-     *                  @OA\Property(property="fields", type="object",
-     *                      @OA\Property(property="name_vi", type="array",
-     *                          @OA\Items(type="string", example="The name vi has already been taken."),
-     *                      ),
-     *                      @OA\Property(property="name_en", type="array",
-     *                          @OA\Items(type="string", example="The name en has already been taken."),
-     *                      ),
-     *                  ),
-     *             ),
-     *         )
-     *     ),
-     * ),
+     * @throws Exception
      */
-    public function update(TagRequest $request, ?string $id): JsonResponse
+    public function update(UpdateRoomRequest $request, ?int $id): JsonResponse
     {
-        $tag                 = $this->tagService->update($id, $request->all());
-        $response['data']    = new TagResource($tag);
-        $response['message'] = __('message.common.update.success');
+        $room                = $this->roomService->updateRoom($id, $request->all());
+        $response['data']    = new RoomResource($room);
+        $response['message'] = __('message.common.create.success');
 
         return $this->success($response, true);
     }
 
     /**
      * Remove the specified resource from storage.
-     * @param string $id
-     * @return JsonResponse
+     *
+     * @throws ApiException
      * @throws Exception
-     * @OA\Delete(
-     *     path="/tag/{id}",
-     *     operationId="Delete Tag",
-     *     tags={"Tags"},
-     *     summary="Delete Tag",
-     *     security={{"bearer": {}}},
-     *     description="Delete tag by id",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="header",
-     *         required=false,
-     *         @OA\Schema(type="datetime"),
-     *         description="tags.id"
-     *     ),
-     *     @OA\Response(
-     *         response="200",
-     *         description="Successful response",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="message", type="string", example="Deleted successfully"),
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response="404",
-     *         description="Not found response",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="error", type="object",
-     *                  @OA\Property(property="name", type="string", example="NOT FOUND"),
-     *                  @OA\Property(property="message", type="string", example="Not found"),
-     *                  @OA\Property(property="status", type="string", example="404"),
-     *                  @OA\Property(property="code", type="string", example="0"),
-     *             ),
-     *         )
-     *     ),
-     * ),
      */
     public function destroy(string $id): JsonResponse
     {
-        $response['success'] = $this->tagService->destroy($id);
+        $response['success'] = $this->roomService->destroy($id);
         $response['message'] = __('message.common.delete.success');
 
         return $this->success($response, true);

@@ -9,6 +9,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use SebastianBergmann\Invoker\TimeoutException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -97,6 +98,13 @@ class Handler extends ExceptionHandler
             return $this->failure(
                 ErrorCodes::REQUEST_VALIDATION_ERROR,
                 "Request validation failed", $e->errors()
+            );
+        }
+
+        if ($e instanceof TimeoutException) {
+            return $this->failure(
+                ErrorCodes::GATEWAY_TIME_OUT,
+                "Gateway time out"
             );
         }
 
