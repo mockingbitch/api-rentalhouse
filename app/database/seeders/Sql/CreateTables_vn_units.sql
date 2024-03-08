@@ -81,3 +81,8 @@ CREATE TABLE wards (
 
 ALTER TABLE wards ADD CONSTRAINT wards_administrative_unit_id_fkey FOREIGN KEY (administrative_unit_id) REFERENCES administrative_units(id);
 ALTER TABLE wards ADD CONSTRAINT wards_district_code_fkey FOREIGN KEY (district_code) REFERENCES districts(code);
+
+-- CREATE INDEX
+CREATE UNIQUE INDEX code ON provinces(code);
+CREATE UNIQUE INDEX code ON districts(code);
+CREATE UNIQUE INDEX code ON wards(code);

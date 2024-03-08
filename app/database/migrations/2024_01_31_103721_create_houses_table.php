@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('ward_code');
             $table->string('full_address')->nullable();
             $table->string('thumbnail')->nullable();
-            $table->integer('category_id');
+            $table->integer('category_id')->nullable();;
             $table->dateTime('verified_at')->nullable();
             $table->integer('status')
                 ->default(0)

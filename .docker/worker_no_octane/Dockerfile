@@ -11,7 +11,7 @@ RUN apt-get update \
     git \
     curl \
     && docker-php-ext-install zip pdo pdo_mysql
-
+RUN pecl install --force apfd && rm -rf /tmp/pear && docker-php-ext-enable apfd
 # RUN chown -R www-data:www-data /var/www
 
 # RUN chmod -R 777 /var/www/html/docker-socialnetwork/storage

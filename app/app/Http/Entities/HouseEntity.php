@@ -49,9 +49,9 @@ class HouseEntity
     public ?AddressEntity $address;
 
     /**
-     * @var DateTime|null $verified_at
+     * @var string|null $verified_at
      */
-    public ?DateTime $verified_at;
+    public ?string $verified_at;
 
     /**
      * @var string|null $status
@@ -92,6 +92,7 @@ class HouseEntity
      * Constructor
      *
      * @param House $house
+     * @param bool $hasPermission
      */
     public function __construct(House $house, bool $hasPermission = false)
     {

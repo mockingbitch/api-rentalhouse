@@ -189,14 +189,15 @@ abstract class BaseService
         endif;
         if (
             isset($request['status'])
-            && auth()->user()->role == General::ROLE_ADMIN
+            && auth()->user()->role <= General::ROLE_MANAGER
         ) :
             $condition = [
                 'status' => $request['status'],
             ];
-        else :
+        endif;
+        if (!auth()->user() || auth()->user()->role > General::ROLE_MANAGER) :
             $condition = [
-                'status' => 1,
+                'status' => General::STATUS_ACTIVE,
             ];
         endif;
 

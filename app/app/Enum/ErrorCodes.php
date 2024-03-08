@@ -4,16 +4,17 @@ namespace App\Enum;
 
 enum ErrorCodes
 {
-    public const USER_UNAUTHORIZED = ['USER:UNAUTHORIZED', 401];
-    public const USER_FORBIDDEN = ['USER:FORBIDDEN', 403];
-    public const REQUEST_BAD_REQUEST = ['REQUEST:BAD_REQUEST', 400];
-    public const REQUEST_VALIDATION_ERROR = ['REQUEST:VALIDATION_ERROR', 422];
-    public const SYSTEM_SERVICE_PROVIDER_ERROR = ['SYSTEM:SERVICE_ERROR', 500];
-    public const SYSTEM_ERROR = ['SYSTEM:ERROR', 500];
-    public const SYSTEM_UNAVAILABLE = ['SYSTEM:UNAVAILABLE', 503];
-    public const METHOD_NOT_ALLOWED = ['METHOD NOT ALLOWED', 405];
-    public const NOT_FOUND = ['NOT FOUND', 404, 0, true];
-    public const BAD_REQUEST = ['BAD REQUEST', 400, 0, true];
+    public const REQUEST_BAD_REQUEST        = ['REQUEST:BAD_REQUEST', 400];
+    public const BAD_REQUEST                = ['BAD REQUEST', 400, 0, true];
+    public const USER_UNAUTHORIZED          = ['USER:UNAUTHORIZED', 401];
+    public const USER_FORBIDDEN             = ['USER:FORBIDDEN', 403];
+    public const NOT_FOUND                  = ['NOT FOUND', 404, 0, true];
+    public const METHOD_NOT_ALLOWED         = ['METHOD NOT ALLOWED', 405];
+    public const REQUEST_VALIDATION_ERROR   = ['REQUEST:VALIDATION_ERROR', 422];
+
+    public const SYSTEM_ERROR               = ['SYSTEM:ERROR', 500];
+    public const SYSTEM_UNAVAILABLE         = ['SYSTEM:UNAVAILABLE', 503];
+    public const GATEWAY_TIME_OUT           = ['GATEWAY TIME OUT', 504];
 
     /*
 

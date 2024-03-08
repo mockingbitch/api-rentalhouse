@@ -15,7 +15,7 @@ RUN pecl install swoole
 RUN docker-php-ext-enable swoole
 RUN docker-php-ext-configure pcntl --enable-pcntl \
   && docker-php-ext-install pcntl;
-
+RUN pecl install --force apfd && rm -rf /tmp/pear && docker-php-ext-enable apfd
 ## Install Nodejs
 #RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 #RUN apt-get install -y nodejs

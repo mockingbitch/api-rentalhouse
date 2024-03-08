@@ -89,10 +89,15 @@ class HouseService extends BaseService
     {
         try {
             $request['lessor_id'] = auth()->user()->id;
-            $request['thumbnail'] = FileService::storeFile(
-                $request['thumbnail'],
-                HouseEnum::FILE_PATH->value
-            );
+            if ($request['thumbnail']) :
+                $request['thumbnail'] = FileService::storeFile(
+                    $request['thumbnail'],
+                    HouseEnum::FILE_PATH->value
+                );
+            endif;
+            if (isset($request['method']) && $request['method'] == General::REQUEST_METHOD_DRAFT) :
+                $request['status'] = HouseEnum::STATUS_DRAFT;
+            endif;
 
             return $this->houseRepository->create($request);
         } catch (Exception $exception) {
@@ -109,7 +114,7 @@ class HouseService extends BaseService
      * @throws ApiException
      */
     public function updateHouse(int $id, array $request = []): mixed
-    {
+    {dd($request);
         try {
             if (!$house = $this->houseRepository->find($id)) :
                 throw new ApiException(

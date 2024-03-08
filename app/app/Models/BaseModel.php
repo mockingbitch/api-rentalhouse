@@ -53,10 +53,10 @@ class BaseModel extends Model
 
     /**
      * Get Verified At Attribute
-     * @param string $date
+     * @param string|null $date
      * @return string
      */
-    public function getVerifiedAtAttribute(string $date): string
+    public function getVerifiedAtAttribute(?string $date): string
     {
         return Carbon::parse($date)->format(General::DATE_TIME_FORMAT);
     }

@@ -53,4 +53,16 @@ return [
             'name_en'        => 'Name (en)',
         ],
     ],
+    'house' => [
+        'field' => [
+            'name'          => 'Name',
+            'description'   => 'Description',
+            'province_code' => 'Province code',
+            'district_code' => 'District code',
+            'ward_code'     => 'Ward code',
+            'full_address'  => 'Full address',
+            'thumbnail'     => 'Thumbnail',
+            'category_id'   => 'Category',
+        ],
+    ],
 ];

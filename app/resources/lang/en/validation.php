@@ -92,10 +92,10 @@ return [
     'mimes' => 'The :attribute must be a file of type: :values.',
     'mimetypes' => 'The :attribute must be a file of type: :values.',
     'min' => [
-        'numeric' => 'The :attribute must be at least :min.',
         'file' => 'The :attribute must be at least :min kilobytes.',
         'string' => 'The :attribute must be at least :min characters.',
         'array' => 'The :attribute must have at least :min items.',
+        'numeric' => 'The :attribute must be at least :min.',
     ],
     'multiple_of' => 'The :attribute must be a multiple of :value.',
     'not_in' => 'The selected :attribute is invalid.',
@@ -178,9 +178,15 @@ return [
     */
 
     'attributes' => [],
-    'learner' => [
-        'required'  => "Please enter your child's name",
-        'max'       => 'Please enter within 100 characters',
-    ]
-
+    'address' => [
+        'province' => [
+            'invalid' => 'The :attribute is invalid',
+        ],
+        'district' => [
+            'invalid' => 'The :attribute is invalid',
+        ],
+        'ward' => [
+            'invalid' => 'The :attribute is invalid',
+        ],
+    ],
 ];
