@@ -34,4 +34,30 @@ class ResponseHelper
             ]
         ];
     }
+
+    /**
+     * Full response with author response
+     *
+     * @param array $response
+     * @param object|null $data
+     * @param bool $hasPermission
+     * @return array
+     */
+    public static function fullResponse(
+        array $response = [],
+        object $data = null,
+        bool $hasPermission = false
+    ): array
+    {
+        $author = [];
+        if ($hasPermission) :
+            $author = [
+                'created_by' => $data->created_by ?? null,
+                'updated_by' => $data->updated_by ?? null,
+                'deleted_by' => $data->deleted_by ?? null,
+            ];
+        endif;
+
+        return array_merge($response, $author);
+    }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Enum\General;
+use App\Helpers\ResponseHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class HouseResource extends JsonResource
@@ -14,7 +16,9 @@ class HouseResource extends JsonResource
      */
     public function toResponse($request): array
     {
-        return [
+        $hasPermission = auth()->user() && auth()->user()->role <= General::ROLE_MANAGER;
+
+        $response = [
             'id'             => $this->id ?? null,
             'name'           => $this->name ?? null,
             'lessor'         => $this->lessor ?? null,
@@ -24,11 +28,11 @@ class HouseResource extends JsonResource
             'category'       => $this->category ?? null,
             'verified_at'    => $this->verified_at ?? null,
             'status'         => $this->status ?? null,
-            'created_by'     => $this->created_by ?? null,
-            'updated_by'     => $this->updated_by ?? null,
-            'deleted_by'     => $this->deleted_by ?? null,
+            'status_label'   => $this->status_label ?? null,
             'created_at'     => $this->created_at ?? null,
             'updated_at'     => $this->updated_at ?? null,
         ];
+
+        return ResponseHelper::fullResponse($response, $this, $hasPermission);
     }
 }

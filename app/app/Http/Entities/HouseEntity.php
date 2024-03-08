@@ -9,9 +9,9 @@ use DateTime;
 class HouseEntity
 {
     /**
-     * @var string|null
+     * @var int|null
      */
-    public ?string $id;
+    public ?int $id;
 
     /**
      * @var string|null
@@ -54,24 +54,29 @@ class HouseEntity
     public ?string $verified_at;
 
     /**
-     * @var string|null $status
+     * @var int|null $status
      */
-    public ?string $status;
+    public ?int $status;
 
     /**
-     * @var string|null $created_by
+     * @var string|null $status_label
      */
-    public ?string $created_by;
+    public ?string $status_label;
 
     /**
-     * @var string|null $updated_by
+     * @var int|null $created_by
      */
-    public ?string $updated_by;
+    public ?int $created_by;
 
     /**
-     * @var string|null $deleted_by
+     * @var int|null $updated_by
      */
-    public ?string $deleted_by;
+    public ?int $updated_by;
+
+    /**
+     * @var int|null $deleted_by
+     */
+    public ?int $deleted_by;
 
     /**
      * @var string|null $created_at
@@ -106,6 +111,7 @@ class HouseEntity
         $this->address      = new AddressEntity($house->address ?? [], $house->full_address ?? null);
         $this->verified_at  = $house->verified_at ?? null;
         $this->status       = $house->status ?? null;
+        $this->status_label = $house->status_label ?? null;
         if ($hasPermission) :
             $this->created_by   = $house->created_by ?? null;
             $this->updated_by   = $house->updated_by ?? null;
@@ -114,6 +120,5 @@ class HouseEntity
             $this->updated_at   = $house->updated_at ?? null;
             $this->deleted_at   = $house->deleted_at ?? null;
         endif;
-
     }
 }
