@@ -17,6 +17,7 @@ return [
         'not_found'         => 'Not found',
         'method_not_allow'  => 'Method not allow',
         'bad_request'       => 'Bad request',
+        'user_forbidden'    => 'Access denied. You do not have permission to execute this action.',
     ],
     'common' => [
         'create' => [
