@@ -18,12 +18,12 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->json('detail')->nullable();
             $table->json('images')->nullable();
-            $table->double('price')->nullable();;
-            $table->integer('type')->nullable();;
+            $table->double('price')->nullable();
+            $table->integer('type')->nullable();
+            $table->json('tags')->nullable();
             $table->integer('status')
                 ->default(0)
                 ->comment('0: Unavailable; 1: Available; 2: Rented');
-            $table->json('tags')->nullable();
             $table->tinyInteger('created_by')->nullable();
             $table->tinyInteger('updated_by')->nullable();
             $table->tinyInteger('deleted_by')->nullable();

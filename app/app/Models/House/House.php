@@ -11,9 +11,31 @@ use App\Models\House\Definitions\HouseDefs;
 use App\Models\Room\Room;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property int $lessor_id
+ * @property string $name
+ * @property string $description
+ * @property string $province_code
+ * @property string $district_code
+ * @property string $ward_code
+ * @property string $full_address
+ * @property string $thumbnail
+ * @property int $category_id
+ * @property string $verified_at
+ * @property int $status
+ * @property int $approved_by
+ * @property int $created_by
+ * @property int $updated_by
+ * @property int $deleted_by
+ * @property string $created_at
+ * @property string $updated_at
+ * @property string $deleted_at
+ * @property string $reason_delete
+ */
 class House extends BaseModel
 {
     /**
@@ -36,6 +58,7 @@ class House extends BaseModel
         'updated_by',
         'deleted_by',
         'approve_by',
+        'reason_delete',
     ];
 
     /**

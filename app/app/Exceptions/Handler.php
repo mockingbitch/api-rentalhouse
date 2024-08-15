@@ -50,67 +50,69 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $e): Response
     {
-        if (env('APP_ENV') == 'local') {
+        if (env('APP_ENV') == 'local') :
             Log::error('Exception', $e);
-        }
+        endif;
+
         // Method not allow exception
-        if ($e instanceof MethodNotAllowedHttpException) {
+        if ($e instanceof MethodNotAllowedHttpException) :
             $headers = $e->getHeaders();
             $allow = $headers['Allow'];
+
             return $this->failureProxy(
                 ErrorCodes::METHOD_NOT_ALLOWED,
                 __('message.method_not_allow', ['method' => $allow])
             );
-        }
+        endif;
         // Local env render
-        if (!$request->is('api/*')) {
+        if (!$request->is('api/*')) :
             return parent::render($request, $e);
-        }
+        endif;
 
         // Api exception render with context
-        if ($e instanceof ApiException) {
+        if ($e instanceof ApiException) :
             return $this->failure(
                 $e->getErrorCode(),
                 $e->getMessage(),
                 appends: $e->getContext()
             );
-        }
+        endif;
 
-        if ($e instanceof NotFoundHttpException) {
+        if ($e instanceof NotFoundHttpException) :
             return $this->failureProxy(
                 ErrorCodes::NOT_FOUND,
                 __('message.error.not_found')
             );
-        }
+        endif;
 
         // Auth exception render
         if (
             $e instanceof AuthenticationException
             || $e instanceof \Laravel\Passport\Exceptions\OAuthServerException
-        ) {
+        ) :
             return $this->failure(
                 ErrorCodes::USER_UNAUTHORIZED,
                 'Your request was made with invalid credentials.'
             );
-        }
+        endif;
 
-        if ($e instanceof ValidationException) {
+        if ($e instanceof ValidationException) :
             return $this->failure(
                 ErrorCodes::REQUEST_VALIDATION_ERROR,
                 "Request validation failed", $e->errors()
             );
-        }
+        endif;
 
-        if ($e instanceof TimeoutException) {
+        if ($e instanceof TimeoutException) :
             return $this->failure(
                 ErrorCodes::GATEWAY_TIME_OUT,
                 "Gateway time out"
             );
-        }
+        endif;
 
-        if (env('APP_ENV') == 'local') {
+        if (env('APP_ENV') == 'local') :
             throw $e;
-        }
+        endif;
 
         // Other exception render
         return $this->failure(

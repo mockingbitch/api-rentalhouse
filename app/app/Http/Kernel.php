@@ -2,7 +2,9 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Authorization;
 use App\Http\Middleware\CheckClientCredentials;
+use App\Http\Middleware\Localization;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 //use Laravel\Passport\Http\Middleware\CheckClientCredentials;
 
@@ -74,8 +76,8 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'client' => CheckClientCredentials::class,
-        'language' => \App\Http\Middleware\Localization::class,
-//        'admin-client' => CheckAdminClientCredentials::class
+        'client'    => CheckClientCredentials::class,
+        'language'  => Localization::class,
+        'author'    => Authorization::class,
     ];
 }
