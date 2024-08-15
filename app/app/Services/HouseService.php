@@ -11,6 +11,7 @@ use App\Enum\HouseEnum;
 use App\Exceptions\ApiException;
 use App\Helpers\Common;
 use App\Helpers\ResponseHelper;
+use App\Models\House\Definitions\HouseDefs;
 use Exception;
 
 class HouseService extends BaseService
@@ -92,11 +93,11 @@ class HouseService extends BaseService
             if ($request['thumbnail']) :
                 $request['thumbnail'] = FileService::storeFile(
                     $request['thumbnail'],
-                    HouseEnum::FILE_PATH->value
+                    HouseDefs::FILE_PATH
                 );
             endif;
             if (isset($request['method']) && $request['method'] == General::REQUEST_METHOD_DRAFT) :
-                $request['status'] = HouseEnum::STATUS_DRAFT;
+                $request['status'] = HouseDefs::STATUS_DRAFT;
             endif;
 
             return $this->houseRepository->create($request);
@@ -114,7 +115,7 @@ class HouseService extends BaseService
      * @throws ApiException
      */
     public function updateHouse(int $id, array $request = []): mixed
-    {dd($request);
+    {
         try {
             if (!$house = $this->houseRepository->find($id)) :
                 throw new ApiException(
@@ -124,11 +125,11 @@ class HouseService extends BaseService
             endif;
 //            FileService::removeFile(
 //                $house->thumbnail,
-//                HouseEnum::FILE_PATH->value
+//                HouseDefs::FILE_PATH
 //            );
             $request['thumbnail'] = FileService::storeFile(
                 $request['thumbnail'],
-                HouseEnum::FILE_PATH->value
+                HouseDefs::FILE_PATH
             );
 
             return $this->houseRepository->update($id, $request);

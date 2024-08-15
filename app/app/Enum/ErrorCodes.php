@@ -17,7 +17,6 @@ enum ErrorCodes
     public const GATEWAY_TIME_OUT           = ['GATEWAY TIME OUT', 504];
 
     /*
-
         400 => 'Bad Request',
         401 => 'Unauthorized',
         402 => 'Payment Required',
@@ -62,6 +61,5 @@ enum ErrorCodes
         510 => 'Not Extended',
         511 => 'Network Authentication Required',
     ];
-
      */
 }

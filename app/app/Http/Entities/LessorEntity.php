@@ -2,7 +2,7 @@
 
 namespace App\Http\Entities;
 
-use App\Models\User;
+use App\Models\User\User;
 
 class LessorEntity
 {

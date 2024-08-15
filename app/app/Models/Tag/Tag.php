@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Tag;
+
+use App\Models\BaseModel;
 
 class Tag extends BaseModel
 {

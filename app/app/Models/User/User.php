@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\User;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enum\General;
 use App\Models\Address\District;
 use App\Models\Address\Province;
 use App\Models\Address\Ward;
+use App\Models\User\Definitions\UserDefs;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -111,11 +112,7 @@ class User extends Authenticatable
      */
     public function getStatusAttribute($value): ?string
     {
-        return match ($value) {
-            General::STATUS_INACTIVE  => __('label.common.status.inactive'),
-            General::STATUS_ACTIVE    => __('label.common.status.active'),
-            default => null,
-        };
+        return __('label.common.status.' . UserDefs::getStatusByCode($value));
     }
 
     /**
