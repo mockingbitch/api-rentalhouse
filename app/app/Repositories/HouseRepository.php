@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Contracts\Repositories\HouseRepositoryInterface;
-use App\Models\House;
+use App\Models\House\House;
 
 class HouseRepository extends BaseRepository implements HouseRepositoryInterface
 {

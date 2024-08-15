@@ -3,6 +3,7 @@
 namespace App\Rules;
 
 use App\Enum\AddressEnum;
+use App\Models\Address\Definitions\AddressDefs;
 use App\Models\Address\District;
 use App\Models\Address\Province;
 use App\Models\Address\Ward;
@@ -32,13 +33,13 @@ class RuleAddress implements ValidationRule
             return;
         endif;
         switch ($attribute) {
-            case AddressEnum::DISTRICT_CODE->value :
+            case AddressDefs::DISTRICT_CODE :
                 $districts = District::where('province_code', $this->parentCode)->pluck('code');
                 if (!in_array($value, $districts->toArray())) :
                     $fail(__('validation.address.district.invalid'));
                 endif;
                 break;
-            case AddressEnum::WARD_CODE->value :
+            case AddressDefs::WARD_CODE :
                 $wards = Ward::where('district_code', $this->parentCode)->pluck('code');
                 if (!in_array($value, $wards->toArray())) :
                     $fail(__('validation.address.ward.invalid'));

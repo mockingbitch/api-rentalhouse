@@ -2,7 +2,7 @@
 
 namespace App\Http\Entities\Tag;
 
-use App\Models\Tag;
+use App\Models\Tag\Tag;
 
 class TagEntity
 {

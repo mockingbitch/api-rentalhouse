@@ -2,8 +2,7 @@
 
 namespace App\Http\Entities\Room;
 
-use App\Http\Entities\HouseEntity;
-use App\Models\Room;
+use App\Models\Room\Room;
 
 class RoomEntity
 {

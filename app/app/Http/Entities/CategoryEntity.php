@@ -2,7 +2,7 @@
 
 namespace App\Http\Entities;
 
-use App\Models\Category;
+use App\Models\Category\Category;
 
 class CategoryEntity
 {

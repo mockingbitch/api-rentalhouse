@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Contracts\Repositories\RoomRepositoryInterface;
-use App\Models\Room;
+use App\Models\Room\Room;
 
 class RoomRepository extends BaseRepository implements RoomRepositoryInterface
 {
