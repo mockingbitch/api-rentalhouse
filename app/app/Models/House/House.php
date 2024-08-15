@@ -1,11 +1,15 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\House;
 
-use App\Enum\General;
 use App\Models\Address\District;
 use App\Models\Address\Province;
 use App\Models\Address\Ward;
+use App\Models\BaseModel;
+use App\Models\Category\Category;
+use App\Models\House\Definitions\HouseDefs;
+use App\Models\Room\Room;
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -128,18 +132,15 @@ class House extends BaseModel
         );
     }
 
+    /**
+     * Status label
+     *
+     * @return Attribute
+     */
     public function statusLabel(): Attribute
     {
-        $label = match ($this->status) {
-            General::STATUS_INACTIVE  => __('label.common.status.inactive'),
-            General::STATUS_DRAFT     => __('label.common.status.draft'),
-            General::STATUS_PENDING   => __('label.common.status.pending'),
-            General::STATUS_ACTIVE    => __('label.common.status.active'),
-            default => null,
-        };
-
         return Attribute::make(
-            get: fn() => $label
+            get: fn() => __('label.common.status.' . HouseDefs::getStatusByCode($this->status))
         );
     }
 }

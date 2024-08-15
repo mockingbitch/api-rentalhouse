@@ -8,6 +8,7 @@ use App\Enum\General;
 use App\Exceptions\ApiException;
 use App\Helpers\Common;
 use App\Helpers\ResponseHelper;
+use App\Models\User\Definitions\UserDefs;
 use App\Repositories\BaseRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
@@ -189,15 +190,15 @@ abstract class BaseService
         endif;
         if (
             isset($request['status'])
-            && auth()->user()->role <= General::ROLE_MANAGER
+            && auth()->user()->role <= UserDefs::ROLE_MANAGER
         ) :
             $condition = [
                 'status' => $request['status'],
             ];
         endif;
-        if (!auth()->user() || auth()->user()->role > General::ROLE_MANAGER) :
+        if (!auth()->user() || auth()->user()->role > UserDefs::ROLE_MANAGER) :
             $condition = [
-                'status' => General::STATUS_ACTIVE,
+                'status' => UserDefs::STATUS_ACTIVE,
             ];
         endif;
 

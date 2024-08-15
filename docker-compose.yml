@@ -59,15 +59,16 @@ services:
     platform: linux/x86_64
     build: .docker/database
     container_name: rental_house_database
+    env_file: "./app/.env"
     ports:
       - "3308:3306"
     volumes:
       - ./.docker/data:/docker-entrypoint-initdb.d
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE:-rentalhouses}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-password}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-password}
-      MYSQL_USER: ${DB_USERNAME:-user}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     restart: unless-stopped

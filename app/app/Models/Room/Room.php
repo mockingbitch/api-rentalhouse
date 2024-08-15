@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Room;
 
 use App\Casts\Json;
+use App\Models\BaseModel;
+use App\Models\House\House;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Room extends BaseModel

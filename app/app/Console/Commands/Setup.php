@@ -43,7 +43,7 @@ class Setup extends Command
         $progressbar->start();
         //Create master data Address
 //        if (!Schema::hasTable('districts')) :
-            Artisan::call('db:seed --class=SqlFileSeeder');
+//            Artisan::call('db:seed --class=SqlFileSeeder');
 //        endif;
 
         //Migrate database

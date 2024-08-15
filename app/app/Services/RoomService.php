@@ -86,7 +86,7 @@ class RoomService extends BaseService
             foreach ($request['images'] as $image) :
                 $images[] = FileService::storeFile(
                     $image,
-                    RoomEnum::FILE_PATH->value
+                    RoomDefs::FILE_PATH
                 );
             endforeach;
             $request['images'] = $images;
@@ -131,11 +131,11 @@ class RoomService extends BaseService
             endif;
 //            FileService::removeFile(
 //                $house->thumbnail,
-//                HouseEnum::FILE_PATH->value
+//                HouseDefs::FILE_PATH
 //            );
 //            $request['thumbnail'] = FileService::storeFile(
 //                $request['thumbnail'],
-//                HouseEnum::FILE_PATH->value
+//                HouseDefs::FILE_PATH
 //            );
             return null;
         } catch (Exception $exception) {

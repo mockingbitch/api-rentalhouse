@@ -3,8 +3,7 @@
 namespace App\Http\Entities;
 
 use App\Http\Entities\Address\AddressEntity;
-use App\Models\House;
-use DateTime;
+use App\Models\House\House;
 
 class HouseEntity
 {
