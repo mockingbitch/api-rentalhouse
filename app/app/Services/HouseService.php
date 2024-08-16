@@ -4,10 +4,8 @@ namespace App\Services;
 
 use App\Contracts\Repositories\HouseRepositoryInterface;
 use App\Core\File\FileService;
-use App\Core\Logger\Log;
 use App\Enum\ErrorCodes;
 use App\Enum\General;
-use App\Enum\HouseEnum;
 use App\Exceptions\ApiException;
 use App\Helpers\Common;
 use App\Helpers\ResponseHelper;
@@ -136,5 +134,10 @@ class HouseService extends BaseService
         } catch (Exception $exception) {
             throw new ApiException(ErrorCodes::BAD_REQUEST);
         }
+    }
+
+    public function getTop()
+    {
+        return 5;
     }
 }
