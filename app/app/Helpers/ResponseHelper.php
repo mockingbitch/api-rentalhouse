@@ -14,7 +14,7 @@ class ResponseHelper
     public static function list(array|object $object, array $request = []): array
     {
         return [
-            'data' => $object->items() ?? [],
+            'data' => is_object($object) ? $object->items() : [],
             'pagination' => [
                 'total'         => $object->total() ?? 0,
                 'page'          => $object->currentPage() ?? 1,

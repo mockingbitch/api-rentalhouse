@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['language']], function () {
     Route::group(['middleware' => 'auth:api'], function () {
-        Route::group(['middleware' => 'author:' . General::ROLE_LESSOR], function () {
+//        Route::group(['middleware' => 'author:' . General::ROLE_LESSOR], function () {
 //            Route::controller(AuthController::class)->group(function () {
 //                Route::get('logout','logout');
 //            });
@@ -33,10 +33,10 @@ Route::group(['middleware' => ['language']], function () {
             Route::resource('house', HouseController::class);
             Route::resource('room', RoomController::class);
 
-            Route::group(['middleware' => 'author:' . General::ROLE_LESSOR], function () {
-                Route::resource('tag', TagController::class);
-                Route::resource('category', CategoryController::class);
-            });
-        });
+//            Route::group(['middleware' => 'author:' . General::ROLE_LESSOR], function () {
+//                Route::resource('tag', TagController::class);
+//                Route::resource('category', CategoryController::class);
+//            });
+//        });
     });
 });

@@ -42,9 +42,9 @@ class Setup extends Command
         $progressbar = $this->output->createProgressBar(1);
         $progressbar->start();
         //Create master data Address
-//        if (!Schema::hasTable('districts')) :
-//            Artisan::call('db:seed --class=SqlFileSeeder');
-//        endif;
+        if (!Schema::hasTable('districts')) :
+            Artisan::call('db:seed --class=SQLFileSeeder');
+        endif;
 
         //Migrate database
         Artisan::call('migrate');

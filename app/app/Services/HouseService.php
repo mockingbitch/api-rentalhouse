@@ -73,6 +73,7 @@ class HouseService extends BaseService
 
             return ResponseHelper::list($data, $request);
         } catch (Exception $exception) {
+            dd($exception);
             return ResponseHelper::list([], $request);
         }
     }
